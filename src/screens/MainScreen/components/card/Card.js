@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import './styles.scss';
 
 const Card = ({
@@ -7,7 +7,9 @@ const Card = ({
     cardMonth,
     cardYear,
     cardCvv,
-    isCardFlipped
+    isCardFlipped,
+    onCvvClick,
+    onCardNumberClick
 }) => {
     let cardType = () => {
         const number = cardNumber;
@@ -50,6 +52,8 @@ const Card = ({
     cardCvv = cardCvv.split('');
     const cardNumberTrimmed = removeEmptySpaces(cardNumber.trim(' '));
 
+    useEffect(() => {});
+
     return (
         <div className={'card-item ' + (isCardFlipped ? '-active' : '')}>
             <div className="card-item__side -front">
@@ -81,7 +85,10 @@ const Card = ({
 
                     <label className="card-item__number">
                         <span>
-                            <div name="slide-fade-up">
+                            <div
+                                name="slide-fade-up"
+                                onClick={onCardNumberClick}
+                            >
                                 {cardNumberArr.map((val, index) => (
                                     <div
                                         key={index}
@@ -108,7 +115,7 @@ const Card = ({
                                 ))}
                             </div>
                         </label>
-                        <div className="card-item__date">
+                        <div className="card-item__date" onClick={onCvvClick}>
                             <label className="card-item__dateTitle">
                                 Expires
                             </label>
@@ -129,7 +136,7 @@ const Card = ({
                 </div>
             </div>
 
-            <div className="card-item__side -back">
+            <div className="card-item__side -back" onClick={onCvvClick}>
                 <div className="card-item__cover">
                     <img
                         src={process.env.PUBLIC_URL + '/card-background/5.jpeg'}
@@ -140,8 +147,8 @@ const Card = ({
                 <div className="card-item__cvv">
                     <div className="card-item__cvvTitle">CVV</div>
                     <div className="card-item__cvvBand">
-                        {cardCvv.map(val => (
-                            <span>*</span>
+                        {cardCvv.map((val, index) => (
+                            <span key={index}>*</span>
                         ))}
                     </div>
                     <div className="card-item__type">

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 
 class CForm extends Component {
     constructor(props) {
@@ -14,6 +14,8 @@ class CForm extends Component {
             }),
             yearsArr: Array.from(new Array(9), (x, i) => currentYear + i)
         };
+
+        // this.ref = createRef();
     }
 
     updateMainState = (name, value) => {
@@ -44,6 +46,7 @@ class CForm extends Component {
 
     render() {
         const { cardMonth, cardYear, monthsArr, yearsArr } = this.state;
+        const { cardNumberRef, cvvRef } = this.props;
         return (
             <div className="card-form">
                 <div className="card-list">{this.props.children}</div>
@@ -62,6 +65,7 @@ class CForm extends Component {
                             autoComplete="off"
                             onChange={this.handleFormChange}
                             maxLength="16"
+                            ref={cardNumberRef}
                         />
                     </div>
 
@@ -138,6 +142,7 @@ class CForm extends Component {
                                     onChange={this.handleFormChange}
                                     onFocus={this.onCvvFocus}
                                     onBlur={this.onCvvBlur}
+                                    ref={cvvRef}
                                 />
                             </div>
                         </div>
