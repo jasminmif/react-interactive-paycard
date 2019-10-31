@@ -51,18 +51,14 @@ const Card = ({
         }
     };
 
-    let focusElementStyle = currentFocusedElm => {
-        const {
-            offsetWidth,
-            offsetHeight,
-            offsetLeft,
-            offsetTop
-        } = currentFocusedElm;
-        const style = {
-            width: `${offsetWidth}px`,
-            height: `${offsetHeight}px`,
-            transform: `translateX(${offsetLeft}px) translateY(${offsetTop}px)`
-        };
+    let outlineElementStyle = element => {
+        const style = element
+            ? {
+                  width: `${element.offsetWidth}px`,
+                  height: `${element.offsetHeight}px`,
+                  transform: `translateX(${element.offsetLeft}px) translateY(${element.offsetTop}px)`
+              }
+            : null;
 
         return style;
     };
@@ -73,10 +69,7 @@ const Card = ({
     const cardNumberTrimmed = removeEmptySpaces(cardNumber.trim(' '));
 
     useEffect(() => {
-        if (!currentFocusedElm) {
-            return;
-        }
-        const style = focusElementStyle(currentFocusedElm);
+        const style = outlineElementStyle(currentFocusedElm);
         setStyle(style);
     }, [currentFocusedElm]);
 
