@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import './styles.scss';
 
 const Card = ({
@@ -8,9 +8,13 @@ const Card = ({
     cardYear,
     cardCvv,
     isCardFlipped,
-    onCvvClick,
-    onCardNumberClick
+    currentFocusedElm,
+    onCardElementClick,
+    cardNumberRef,
+    cardHolderRef,
+    cardDateRef
 }) => {
+    const [style, setStyle] = useState({});
     let cardType = () => {
         const number = cardNumber;
 
@@ -47,17 +51,44 @@ const Card = ({
         }
     };
 
+    let focusElementStyle = currentFocusedElm => {
+        const {
+            offsetWidth,
+            offsetHeight,
+            offsetLeft,
+            offsetTop
+        } = currentFocusedElm;
+        const style = {
+            width: `${offsetWidth}px`,
+            height: `${offsetHeight}px`,
+            transform: `translateX(${offsetLeft}px) translateY(${offsetTop}px)`
+        };
+
+        return style;
+    };
+
     const cardHolderArr = cardHolder.split('');
     const cardNumberArr = cardNumber.split('');
     cardCvv = cardCvv.split('');
     const cardNumberTrimmed = removeEmptySpaces(cardNumber.trim(' '));
 
-    useEffect(() => {});
+    useEffect(() => {
+        if (!currentFocusedElm) {
+            return;
+        }
+        const style = focusElementStyle(currentFocusedElm);
+        setStyle(style);
+    }, [currentFocusedElm]);
 
     return (
         <div className={'card-item ' + (isCardFlipped ? '-active' : '')}>
             <div className="card-item__side -front">
-                <div className="card-item__focus"></div>
+                <div
+                    className={`card-item__focus ${
+                        currentFocusedElm ? `-active` : ``
+                    }`}
+                    style={style}
+                ></div>
                 <div className="card-item__cover">
                     <img
                         src={process.env.PUBLIC_URL + '/card-background/5.jpeg'}
@@ -83,11 +114,11 @@ const Card = ({
                         </div>
                     </div>
 
-                    <label className="card-item__number">
+                    <label className="card-item__number" ref={cardNumberRef}>
                         <span>
                             <div
                                 name="slide-fade-up"
-                                onClick={onCardNumberClick}
+                                onClick={() => onCardElementClick('cardNumber')}
                             >
                                 {cardNumberArr.map((val, index) => (
                                     <div
@@ -101,7 +132,11 @@ const Card = ({
                         </span>
                     </label>
                     <div className="card-item__content">
-                        <label className="card-item__info">
+                        <label
+                            className="card-item__info"
+                            onClick={() => onCardElementClick('cardHolder')}
+                            ref={cardHolderRef}
+                        >
                             <div className="card-item__holder">Card Holder</div>
 
                             <div className="card-item__name" key="2">
@@ -115,7 +150,11 @@ const Card = ({
                                 ))}
                             </div>
                         </label>
-                        <div className="card-item__date" onClick={onCvvClick}>
+                        <div
+                            className="card-item__date"
+                            onClick={() => onCardElementClick('cardDate')}
+                            ref={cardDateRef}
+                        >
                             <label className="card-item__dateTitle">
                                 Expires
                             </label>
@@ -136,7 +175,7 @@ const Card = ({
                 </div>
             </div>
 
-            <div className="card-item__side -back" onClick={onCvvClick}>
+            <div className="card-item__side -back">
                 <div className="card-item__cover">
                     <img
                         src={process.env.PUBLIC_URL + '/card-background/5.jpeg'}

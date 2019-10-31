@@ -46,7 +46,14 @@ class CForm extends Component {
 
     render() {
         const { cardMonth, cardYear, monthsArr, yearsArr } = this.state;
-        const { cardNumberRef, cvvRef } = this.props;
+        const {
+            cardNumberRef,
+            cardHolderRef,
+            cardDateRef,
+            cardCvvRef,
+            onCardInputFocus,
+            onCardInputBlur
+        } = this.props;
         return (
             <div className="card-form">
                 <div className="card-list">{this.props.children}</div>
@@ -59,19 +66,21 @@ class CForm extends Component {
                             Card Number
                         </label>
                         <input
-                            type="text"
+                            type="tel"
                             name="cardNumber"
                             className="card-input__input"
                             autoComplete="off"
                             onChange={this.handleFormChange}
                             maxLength="16"
                             ref={cardNumberRef}
+                            onFocus={e => onCardInputFocus(e, 'cardNumber')}
+                            onBlur={onCardInputBlur}
                         />
                     </div>
 
                     <div className="card-input">
                         <label htmlFor="cardName" className="card-input__label">
-                            Card Name
+                            Card Holder
                         </label>
                         <input
                             type="text"
@@ -79,6 +88,9 @@ class CForm extends Component {
                             autoComplete="off"
                             name="cardHolder"
                             onChange={this.handleFormChange}
+                            ref={cardHolderRef}
+                            onFocus={e => onCardInputFocus(e, 'cardHolder')}
+                            onBlur={onCardInputBlur}
                         />
                     </div>
 
@@ -96,6 +108,11 @@ class CForm extends Component {
                                     value={cardMonth}
                                     name="cardMonth"
                                     onChange={this.handleFormChange}
+                                    ref={cardDateRef}
+                                    onFocus={e =>
+                                        onCardInputFocus(e, 'cardDate')
+                                    }
+                                    onBlur={onCardInputBlur}
                                 >
                                     <option value="" disabled>
                                         Month
@@ -112,6 +129,10 @@ class CForm extends Component {
                                     className="card-input__input -select"
                                     value={cardYear}
                                     onChange={this.handleFormChange}
+                                    onFocus={e =>
+                                        onCardInputFocus(e, 'cardDate')
+                                    }
+                                    onBlur={onCardInputBlur}
                                 >
                                     <option value="" disabled>
                                         Year
@@ -142,7 +163,7 @@ class CForm extends Component {
                                     onChange={this.handleFormChange}
                                     onFocus={this.onCvvFocus}
                                     onBlur={this.onCvvBlur}
-                                    ref={cvvRef}
+                                    ref={cardCvvRef}
                                 />
                             </div>
                         </div>
