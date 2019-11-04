@@ -1,12 +1,11 @@
 import React, { Component, useState, createRef } from 'react';
 import CForm from './components/form';
 import Card from './components/card';
-import './MainScreen.scss';
-import { statement } from '@babel/template';
+// import './MainScreen.scss';
 
 const defaultCardNo = '#### #### #### ####';
 const defaultCardHolderName = 'FULL NAME';
-const defaultCardMonth = 'MM';
+const defaultCardMonth = '';
 const defaultCardYear = 'YY';
 const defaultCardCvv = '';
 

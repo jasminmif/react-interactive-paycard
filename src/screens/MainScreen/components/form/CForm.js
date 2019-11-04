@@ -114,9 +114,7 @@ class CForm extends Component {
                                     }
                                     onBlur={onCardInputBlur}
                                 >
-                                    <option value="" disabled>
-                                        Month
-                                    </option>
+                                    <option value="">Month</option>
 
                                     {monthsArr.map((val, index) => (
                                         <option key={index} value={val}>

@@ -1,4 +1,9 @@
 import React, { Component, useEffect, useState } from 'react';
+import {
+    CSSTransition,
+    TransitionGroup,
+    SwitchTransition
+} from 'react-transition-group';
 import './styles.scss';
 
 const Card = ({
@@ -15,6 +20,7 @@ const Card = ({
     cardDateRef
 }) => {
     const [style, setStyle] = useState({});
+    const [counter, setCounter] = useState(0);
     let cardType = () => {
         const number = cardNumber;
 
@@ -73,6 +79,10 @@ const Card = ({
         setStyle(style);
     }, [currentFocusedElm]);
 
+    useEffect(() => {
+        setCounter(counter + 1);
+    }, [cardMonth]);
+
     return (
         <div className={'card-item ' + (isCardFlipped ? '-active' : '')}>
             <div className="card-item__side -front">
@@ -107,22 +117,26 @@ const Card = ({
                         </div>
                     </div>
 
-                    <label className="card-item__number" ref={cardNumberRef}>
-                        <span>
-                            <div
-                                name="slide-fade-up"
-                                onClick={() => onCardElementClick('cardNumber')}
-                            >
-                                {cardNumberArr.map((val, index) => (
-                                    <div
-                                        key={index}
-                                        className="card-item__numberItem"
-                                    >
-                                        {val}
-                                    </div>
-                                ))}
-                            </div>
-                        </span>
+                    <label
+                        className="card-item__number"
+                        ref={cardNumberRef}
+                        onClick={() => onCardElementClick('cardNumber')}
+                    >
+                        {cardNumberArr.map((val, index) => (
+                            <span key={index}>
+                                {/* <CSSTransition
+                                    classNames="slide-fade-right"
+                                    timeout={500}
+                                > */}
+                                <div
+                                    key={index}
+                                    className="card-item__numberItem"
+                                >
+                                    {val}
+                                </div>
+                                {/* </CSSTransition> */}
+                            </span>
+                        ))}
                     </label>
                     <div className="card-item__content">
                         <label
@@ -131,16 +145,32 @@ const Card = ({
                             ref={cardHolderRef}
                         >
                             <div className="card-item__holder">Card Holder</div>
-
-                            <div className="card-item__name" key="2">
-                                {cardHolderArr.map((val, index) => (
-                                    <span
-                                        key={index}
-                                        className="card-item__nameItem slide-fade-right-enter-active"
-                                    >
-                                        {val}
-                                    </span>
-                                ))}
+                            <div className="card-item__name">
+                                <TransitionGroup
+                                    className="slide-fade-up"
+                                    component="div"
+                                >
+                                    {cardHolder == 'FULL NAME' ? (
+                                        <CSSTransition
+                                            classNames="slide-fade-up"
+                                            timeout={250}
+                                        >
+                                            <div>FULL NAME</div>
+                                        </CSSTransition>
+                                    ) : (
+                                        cardHolderArr.map((val, index) => (
+                                            <CSSTransition
+                                                timeout={500}
+                                                classNames="slide-fade-right"
+                                                key={index}
+                                            >
+                                                <span className="card-item__nameItem">
+                                                    {val}
+                                                </span>
+                                            </CSSTransition>
+                                        ))
+                                    )}
+                                </TransitionGroup>
                             </div>
                         </label>
                         <div
@@ -152,7 +182,29 @@ const Card = ({
                                 Expires
                             </label>
                             <label className="card-item__dateItem">
-                                <span>{cardMonth}</span>
+                                <SwitchTransition out-in>
+                                    {!cardMonth ? (
+                                        <CSSTransition
+                                            classNames="slide-fade-up"
+                                            timeout={250}
+                                            key={counter}
+                                            appear={false}
+                                            unmountOnExit
+                                        >
+                                            <span>MM</span>
+                                        </CSSTransition>
+                                    ) : (
+                                        <CSSTransition
+                                            classNames="slide-fade-up"
+                                            timeout={250}
+                                            key={counter}
+                                            appear={true}
+                                            unmountOnExit
+                                        >
+                                            <span>{cardMonth}</span>
+                                        </CSSTransition>
+                                    )}
+                                </SwitchTransition>
                             </label>
                             /
                             <label
