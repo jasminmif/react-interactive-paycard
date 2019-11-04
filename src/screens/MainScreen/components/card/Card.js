@@ -6,23 +6,19 @@ import {
 } from 'react-transition-group';
 import './styles.scss';
 
-const Card = ({
-    cardHolder,
-    cardNumber,
-    cardMonth,
-    cardYear,
-    cardCvv,
-    isCardFlipped,
-    currentFocusedElm,
-    onCardElementClick,
-    cardNumberRef,
-    cardHolderRef,
-    cardDateRef
-}) => {
-    const [style, setStyle] = useState({});
-    const [counter, setCounter] = useState(0);
-    let cardType = () => {
-        const number = cardNumber;
+class Card extends Component {
+    constructor() {
+        super();
+        this.state = {
+            style: {},
+            counter: 0
+        };
+    }
+
+    // const [style, setStyle] = useState({});
+    // const [counter, setCounter] = useState(0);
+    cardType = () => {
+        const number = this.props.cardNumber;
 
         let re = new RegExp('^4');
         if (number.match(re) != null) return 'visa';
@@ -45,11 +41,11 @@ const Card = ({
         return 'visa'; // default type
     };
 
-    let removeEmptySpaces = cardNumber => {
+    removeEmptySpaces = cardNumber => {
         return cardNumber.replace(/\s+/g, '');
     };
 
-    let shouldMaskNumber = (cardNumber, index) => {
+    shouldMaskNumber = (cardNumber, index) => {
         if (cardNumber.length == 15) {
             return index > 4 && index < 12;
         } else {
@@ -57,7 +53,7 @@ const Card = ({
         }
     };
 
-    let outlineElementStyle = element => {
+    outlineElementStyle = element => {
         const style = element
             ? {
                   width: `${element.offsetWidth}px`,
@@ -69,182 +65,219 @@ const Card = ({
         return style;
     };
 
-    const cardHolderArr = cardHolder.split('');
-    const cardNumberArr = cardNumber.split('');
-    cardCvv = cardCvv.split('');
-    const cardNumberTrimmed = removeEmptySpaces(cardNumber.trim(' '));
+    componentDidUpdate(prevProps) {
+        const { currentFocusedElm, cardMonth } = this.props;
+        if (currentFocusedElm !== prevProps.currentFocusedElm) {
+            const style = this.outlineElementStyle(currentFocusedElm);
+            this.setState({ ...style });
+        }
 
-    useEffect(() => {
-        const style = outlineElementStyle(currentFocusedElm);
-        setStyle(style);
-    }, [currentFocusedElm]);
+        if (cardMonth !== prevProps.cardMonth) {
+            console.log('NOT s');
+        }
+    }
 
-    useEffect(() => {
-        setCounter(counter + 1);
-    }, [cardMonth]);
+    // useEffect(() => {
+    //     const style = outlineElementStyle(currentFocusedElm);
+    //     setStyle(style);
+    // }, [currentFocusedElm]);
 
-    return (
-        <div className={'card-item ' + (isCardFlipped ? '-active' : '')}>
-            <div className="card-item__side -front">
-                <div
-                    className={`card-item__focus ${
-                        currentFocusedElm ? `-active` : ``
-                    }`}
-                    style={style}
-                ></div>
-                <div className="card-item__cover">
-                    <img
-                        src={process.env.PUBLIC_URL + '/card-background/5.jpeg'}
-                        className="card-item__bg"
-                    />
+    // useEffect(() => {
+    //     setCounter(counter + 1);
+    // }, [cardMonth]);
+
+    render() {
+        let {
+            cardHolder,
+            cardNumber,
+            cardMonth,
+            cardYear,
+            cardCvv,
+            isCardFlipped,
+            currentFocusedElm,
+            onCardElementClick,
+            cardNumberRef,
+            cardHolderRef,
+            cardDateRef
+        } = this.props;
+
+        const cardHolderArr = cardHolder.split('');
+        const cardNumberArr = cardNumber.split('');
+        cardCvv = cardCvv.split('');
+        // const cardNumberTrimmed = removeEmptySpaces(cardNumber.trim(' '));
+
+        const { style, counter } = this.state;
+
+        return (
+            <div className={'card-item ' + (isCardFlipped ? '-active' : '')}>
+                <div className="card-item__side -front">
+                    <div
+                        className={`card-item__focus ${
+                            currentFocusedElm ? `-active` : ``
+                        }`}
+                        style={style}
+                    ></div>
+                    <div className="card-item__cover">
+                        <img
+                            src={
+                                process.env.PUBLIC_URL +
+                                '/card-background/5.jpeg'
+                            }
+                            className="card-item__bg"
+                        />
+                    </div>
+
+                    <div className="card-item__wrapper">
+                        <div className="card-item__top">
+                            <img
+                                src={process.env.PUBLIC_URL + '/chip.png'}
+                                alt=""
+                                className="card-item__chip"
+                            />
+                            <div className="card-item__type">
+                                <img
+                                    src={
+                                        process.env.PUBLIC_URL +
+                                        `/card-type/${this.cardType()}.png`
+                                    }
+                                    className="card-item__typeImg"
+                                />
+                            </div>
+                        </div>
+
+                        <label
+                            className="card-item__number"
+                            ref={cardNumberRef}
+                            onClick={() => onCardElementClick('cardNumber')}
+                        >
+                            {cardNumberArr.map((val, index) => (
+                                <span key={index}>
+                                    {/* <CSSTransition
+                                    classNames="slide-fade-right"
+                                    timeout={500}
+                                > */}
+                                    <div
+                                        key={index}
+                                        className="card-item__numberItem"
+                                    >
+                                        {val}
+                                    </div>
+                                    {/* </CSSTransition> */}
+                                </span>
+                            ))}
+                        </label>
+                        <div className="card-item__content">
+                            <label
+                                className="card-item__info"
+                                onClick={() => onCardElementClick('cardHolder')}
+                                ref={cardHolderRef}
+                            >
+                                <div className="card-item__holder">
+                                    Card Holder
+                                </div>
+                                <div className="card-item__name">
+                                    <TransitionGroup
+                                        className="slide-fade-up"
+                                        component="div"
+                                    >
+                                        {cardHolder == 'FULL NAME' ? (
+                                            <CSSTransition
+                                                classNames="slide-fade-up"
+                                                timeout={250}
+                                            >
+                                                <div>FULL NAME</div>
+                                            </CSSTransition>
+                                        ) : (
+                                            cardHolderArr.map((val, index) => (
+                                                <CSSTransition
+                                                    timeout={500}
+                                                    classNames="slide-fade-right"
+                                                    key={index}
+                                                >
+                                                    <span className="card-item__nameItem">
+                                                        {val}
+                                                    </span>
+                                                </CSSTransition>
+                                            ))
+                                        )}
+                                    </TransitionGroup>
+                                </div>
+                            </label>
+                            <div
+                                className="card-item__date"
+                                onClick={() => onCardElementClick('cardDate')}
+                                ref={cardDateRef}
+                            >
+                                <label className="card-item__dateTitle">
+                                    Expires
+                                </label>
+                                <label className="card-item__dateItem">
+                                    <SwitchTransition out-in>
+                                        {!cardMonth ? (
+                                            <CSSTransition
+                                                classNames="slide-fade-up"
+                                                timeout={250}
+                                                key={cardMonth}
+                                            >
+                                                <span>MM</span>
+                                            </CSSTransition>
+                                        ) : (
+                                            <CSSTransition
+                                                classNames="slide-fade-up"
+                                                timeout={250}
+                                                key={cardMonth}
+                                            >
+                                                <span>{cardMonth}</span>
+                                            </CSSTransition>
+                                        )}
+                                    </SwitchTransition>
+                                </label>
+                                /
+                                <label
+                                    htmlFor="cardYear"
+                                    className="card-item__dateItem"
+                                >
+                                    <span key="2">
+                                        {cardYear.toString().substr(-2)}
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div className="card-item__wrapper">
-                    <div className="card-item__top">
+                <div className="card-item__side -back">
+                    <div className="card-item__cover">
                         <img
-                            src={process.env.PUBLIC_URL + '/chip.png'}
-                            alt=""
-                            className="card-item__chip"
+                            src={
+                                process.env.PUBLIC_URL +
+                                '/card-background/5.jpeg'
+                            }
+                            className="card-item__bg"
                         />
+                    </div>
+                    <div className="card-item__band"></div>
+                    <div className="card-item__cvv">
+                        <div className="card-item__cvvTitle">CVV</div>
+                        <div className="card-item__cvvBand">
+                            {cardCvv.map((val, index) => (
+                                <span key={index}>*</span>
+                            ))}
+                        </div>
                         <div className="card-item__type">
                             <img
                                 src={
                                     process.env.PUBLIC_URL +
-                                    `/card-type/${cardType()}.png`
+                                    '/card-type/visa.png'
                                 }
                                 className="card-item__typeImg"
                             />
                         </div>
                     </div>
-
-                    <label
-                        className="card-item__number"
-                        ref={cardNumberRef}
-                        onClick={() => onCardElementClick('cardNumber')}
-                    >
-                        {cardNumberArr.map((val, index) => (
-                            <span key={index}>
-                                {/* <CSSTransition
-                                    classNames="slide-fade-right"
-                                    timeout={500}
-                                > */}
-                                <div
-                                    key={index}
-                                    className="card-item__numberItem"
-                                >
-                                    {val}
-                                </div>
-                                {/* </CSSTransition> */}
-                            </span>
-                        ))}
-                    </label>
-                    <div className="card-item__content">
-                        <label
-                            className="card-item__info"
-                            onClick={() => onCardElementClick('cardHolder')}
-                            ref={cardHolderRef}
-                        >
-                            <div className="card-item__holder">Card Holder</div>
-                            <div className="card-item__name">
-                                <TransitionGroup
-                                    className="slide-fade-up"
-                                    component="div"
-                                >
-                                    {cardHolder == 'FULL NAME' ? (
-                                        <CSSTransition
-                                            classNames="slide-fade-up"
-                                            timeout={250}
-                                        >
-                                            <div>FULL NAME</div>
-                                        </CSSTransition>
-                                    ) : (
-                                        cardHolderArr.map((val, index) => (
-                                            <CSSTransition
-                                                timeout={500}
-                                                classNames="slide-fade-right"
-                                                key={index}
-                                            >
-                                                <span className="card-item__nameItem">
-                                                    {val}
-                                                </span>
-                                            </CSSTransition>
-                                        ))
-                                    )}
-                                </TransitionGroup>
-                            </div>
-                        </label>
-                        <div
-                            className="card-item__date"
-                            onClick={() => onCardElementClick('cardDate')}
-                            ref={cardDateRef}
-                        >
-                            <label className="card-item__dateTitle">
-                                Expires
-                            </label>
-                            <label className="card-item__dateItem">
-                                <SwitchTransition out-in>
-                                    {!cardMonth ? (
-                                        <CSSTransition
-                                            classNames="slide-fade-up"
-                                            timeout={250}
-                                            key={counter}
-                                            appear={false}
-                                            unmountOnExit
-                                        >
-                                            <span>MM</span>
-                                        </CSSTransition>
-                                    ) : (
-                                        <CSSTransition
-                                            classNames="slide-fade-up"
-                                            timeout={250}
-                                            key={counter}
-                                            appear={true}
-                                            unmountOnExit
-                                        >
-                                            <span>{cardMonth}</span>
-                                        </CSSTransition>
-                                    )}
-                                </SwitchTransition>
-                            </label>
-                            /
-                            <label
-                                htmlFor="cardYear"
-                                className="card-item__dateItem"
-                            >
-                                <span key="2">
-                                    {cardYear.toString().substr(-2)}
-                                </span>
-                            </label>
-                        </div>
-                    </div>
                 </div>
             </div>
-
-            <div className="card-item__side -back">
-                <div className="card-item__cover">
-                    <img
-                        src={process.env.PUBLIC_URL + '/card-background/5.jpeg'}
-                        className="card-item__bg"
-                    />
-                </div>
-                <div className="card-item__band"></div>
-                <div className="card-item__cvv">
-                    <div className="card-item__cvvTitle">CVV</div>
-                    <div className="card-item__cvvBand">
-                        {cardCvv.map((val, index) => (
-                            <span key={index}>*</span>
-                        ))}
-                    </div>
-                    <div className="card-item__type">
-                        <img
-                            src={process.env.PUBLIC_URL + '/card-type/visa.png'}
-                            className="card-item__typeImg"
-                        />
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
+        );
+    }
+}
 
 export default Card;
