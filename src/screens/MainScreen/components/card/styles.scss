@@ -408,7 +408,6 @@
 }
 
 .slide-fade-up-enter {
-    // transition-delay: 1s;
     transform: translateY(15px);
     pointer-events: none;
     opacity: 0;
@@ -427,14 +426,14 @@
 }
 
 .slide-fade-up-exit {
-    transform: translateY(-15px);
+    transform: translateY(0px);
     pointer-events: none;
     opacity: 1;
 }
 
 .slide-fade-up-exit-active {
-    transition: all 0.25s ease-in-out;
-    transform: translateY(0px);
+    transition: all 250ms ease-in-out;
+    transform: translateY(-15px);
     position: relative;
     opacity: 0;
 }

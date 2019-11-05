@@ -67,13 +67,12 @@ class Card extends Component {
 
     componentDidUpdate(prevProps) {
         const { currentFocusedElm, cardMonth } = this.props;
-        if (currentFocusedElm !== prevProps.currentFocusedElm) {
+        if (
+            currentFocusedElm &&
+            currentFocusedElm != prevProps.currentFocusedElm
+        ) {
             const style = this.outlineElementStyle(currentFocusedElm);
-            this.setState({ ...style });
-        }
-
-        if (cardMonth !== prevProps.cardMonth) {
-            console.log('NOT s');
+            this.setState({ style });
         }
     }
 
@@ -106,7 +105,7 @@ class Card extends Component {
         cardCvv = cardCvv.split('');
         // const cardNumberTrimmed = removeEmptySpaces(cardNumber.trim(' '));
 
-        const { style, counter } = this.state;
+        // const { style } = this.state;
 
         return (
             <div className={'card-item ' + (isCardFlipped ? '-active' : '')}>
@@ -115,7 +114,7 @@ class Card extends Component {
                         className={`card-item__focus ${
                             currentFocusedElm ? `-active` : ``
                         }`}
-                        style={style}
+                        style={this.state.style}
                     ></div>
                     <div className="card-item__cover">
                         <img
@@ -150,21 +149,25 @@ class Card extends Component {
                             ref={cardNumberRef}
                             onClick={() => onCardElementClick('cardNumber')}
                         >
-                            {cardNumberArr.map((val, index) => (
-                                <span key={index}>
-                                    {/* <CSSTransition
-                                    classNames="slide-fade-right"
-                                    timeout={500}
-                                > */}
-                                    <div
+                            <TransitionGroup
+                                className="slide-fade-up"
+                                component="div"
+                            >
+                                {cardNumberArr.map((val, index) => (
+                                    <CSSTransition
+                                        classNames="slide-fade-up"
+                                        timeout={250}
                                         key={index}
-                                        className="card-item__numberItem"
                                     >
-                                        {val}
-                                    </div>
-                                    {/* </CSSTransition> */}
-                                </span>
-                            ))}
+                                        <div
+                                            key={index}
+                                            className="card-item__numberItem"
+                                        >
+                                            {val}
+                                        </div>
+                                    </CSSTransition>
+                                ))}
+                            </TransitionGroup>
                         </label>
                         <div className="card-item__content">
                             <label
@@ -190,7 +193,7 @@ class Card extends Component {
                                         ) : (
                                             cardHolderArr.map((val, index) => (
                                                 <CSSTransition
-                                                    timeout={500}
+                                                    timeout={250}
                                                     classNames="slide-fade-right"
                                                     key={index}
                                                 >
@@ -212,7 +215,7 @@ class Card extends Component {
                                     Expires
                                 </label>
                                 <label className="card-item__dateItem">
-                                    <SwitchTransition out-in>
+                                    <SwitchTransition in-out>
                                         {!cardMonth ? (
                                             <CSSTransition
                                                 classNames="slide-fade-up"
@@ -237,9 +240,29 @@ class Card extends Component {
                                     htmlFor="cardYear"
                                     className="card-item__dateItem"
                                 >
-                                    <span key="2">
-                                        {cardYear.toString().substr(-2)}
-                                    </span>
+                                    <SwitchTransition out-in>
+                                        {!cardYear ? (
+                                            <CSSTransition
+                                                classNames="slide-fade-up"
+                                                timeout={250}
+                                                key={cardYear}
+                                            >
+                                                <span>YY</span>
+                                            </CSSTransition>
+                                        ) : (
+                                            <CSSTransition
+                                                classNames="slide-fade-up"
+                                                timeout={250}
+                                                key={cardYear}
+                                            >
+                                                <span>
+                                                    {cardYear
+                                                        .toString()
+                                                        .substr(-2)}
+                                                </span>
+                                            </CSSTransition>
+                                        )}
+                                    </SwitchTransition>
                                 </label>
                             </div>
                         </div>

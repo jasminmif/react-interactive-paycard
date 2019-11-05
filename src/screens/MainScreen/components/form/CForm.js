@@ -71,7 +71,7 @@ class CForm extends Component {
                             className="card-input__input"
                             autoComplete="off"
                             onChange={this.handleFormChange}
-                            maxLength="16"
+                            maxLength="19"
                             ref={cardNumberRef}
                             onFocus={e => onCardInputFocus(e, 'cardNumber')}
                             onBlur={onCardInputBlur}
@@ -114,7 +114,9 @@ class CForm extends Component {
                                     }
                                     onBlur={onCardInputBlur}
                                 >
-                                    <option value="">Month</option>
+                                    <option value="" disabled>
+                                        Month
+                                    </option>
 
                                     {monthsArr.map((val, index) => (
                                         <option key={index} value={val}>

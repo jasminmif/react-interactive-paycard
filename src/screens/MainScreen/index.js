@@ -6,7 +6,7 @@ import Card from './components/card';
 const defaultCardNo = '#### #### #### ####';
 const defaultCardHolderName = 'FULL NAME';
 const defaultCardMonth = '';
-const defaultCardYear = 'YY';
+const defaultCardYear = '';
 const defaultCardCvv = '';
 
 const MainScreen = ({}) => {
