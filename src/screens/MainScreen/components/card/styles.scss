@@ -404,7 +404,7 @@
     opacity: 0;
     transition: all 0.25s ease-in-out;
     transform: translateX(0px) rotate(-80deg);
-    position: absolute;
+    position: relative;
 }
 
 .slide-fade-up-enter {

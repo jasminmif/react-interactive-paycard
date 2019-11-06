@@ -76,6 +76,19 @@ class Card extends Component {
         }
     }
 
+    maskCardNumber(cardNumber) {
+        let cardNumberArr = cardNumber.split('');
+        cardNumberArr.forEach((val, index) => {
+            if (index > 4 && index < 14) {
+                if (cardNumberArr[index] !== ' ') {
+                    cardNumberArr[index] = '*';
+                }
+            }
+        });
+
+        return cardNumberArr;
+    }
+
     // useEffect(() => {
     //     const style = outlineElementStyle(currentFocusedElm);
     //     setStyle(style);
@@ -101,7 +114,7 @@ class Card extends Component {
         } = this.props;
 
         const cardHolderArr = cardHolder.split('');
-        const cardNumberArr = cardNumber.split('');
+        const cardNumberArr = this.maskCardNumber(cardNumber);
         cardCvv = cardCvv.split('');
         // const cardNumberTrimmed = removeEmptySpaces(cardNumber.trim(' '));
 
@@ -153,20 +166,31 @@ class Card extends Component {
                                 className="slide-fade-up"
                                 component="div"
                             >
-                                {cardNumberArr.map((val, index) => (
+                                {cardNumber ? (
+                                    cardNumberArr.map((val, index) => (
+                                        <CSSTransition
+                                            classNames="slide-fade-up"
+                                            timeout={250}
+                                            key={index}
+                                        >
+                                            <div
+                                                key={index}
+                                                className="card-item__numberItem"
+                                            >
+                                                {val}
+                                            </div>
+                                        </CSSTransition>
+                                    ))
+                                ) : (
                                     <CSSTransition
                                         classNames="slide-fade-up"
                                         timeout={250}
-                                        key={index}
                                     >
-                                        <div
-                                            key={index}
-                                            className="card-item__numberItem"
-                                        >
-                                            {val}
+                                        <div className="card-item__numberItem">
+                                            #
                                         </div>
                                     </CSSTransition>
-                                ))}
+                                )}
                             </TransitionGroup>
                         </label>
                         <div className="card-item__content">
