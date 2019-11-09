@@ -6,8 +6,8 @@ A fantastic credit card form with smooth and sweet micro-interactions. Includes 
 
 ## Libraries used
 
-[react](https://github.com/facebook/react)
-[react-transition-group](https://github.com/reactjs/react-transition-group)
+-   [react](https://github.com/facebook/react)
+-   [react-transition-group](https://github.com/reactjs/react-transition-group)
 
 ## Available Scripts
 
