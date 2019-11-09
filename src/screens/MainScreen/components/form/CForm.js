@@ -14,8 +14,6 @@ class CForm extends Component {
             }),
             yearsArr: Array.from(new Array(9), (x, i) => currentYear + i)
         };
-
-        // this.ref = createRef();
     }
 
     updateMainState = (name, value) => {

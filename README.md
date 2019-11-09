@@ -4,6 +4,11 @@ Inspired from a vue project [vue-interactive-paycard](https://github.com/muhamme
 
 A fantastic credit card form with smooth and sweet micro-interactions. Includes number formatting, validation and automatic card type detection. Built with vuejs and also fully responsive
 
+## Libraries used
+
+[react](https://github.com/facebook/react)
+[react-transition-group](https://github.com/reactjs/react-transition-group)
+
 ## Available Scripts
 
 In the project directory, you can run:
