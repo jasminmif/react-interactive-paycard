@@ -173,10 +173,7 @@ class Card extends Component {
                                             timeout={250}
                                             key={index}
                                         >
-                                            <div
-                                                key={index}
-                                                className="card-item__numberItem"
-                                            >
+                                            <div className="card-item__numberItem">
                                                 {val}
                                             </div>
                                         </CSSTransition>
