@@ -289,7 +289,7 @@ class Card extends Component {
                         <img
                             src={
                                 process.env.PUBLIC_URL +
-                                '/card-background/5.jpeg'
+                                `/card-background/${this.state.backgroundImgname}`
                             }
                             className="card-item__bg"
                         />
