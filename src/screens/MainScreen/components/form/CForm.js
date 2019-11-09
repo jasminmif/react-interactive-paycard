@@ -6,6 +6,7 @@ class CForm extends Component {
 
         const currentYear = new Date().getFullYear();
         this.state = {
+            cardNumber: '',
             cardMonth: '',
             cardYear: '',
             monthsArr: Array.from(new Array(12), (x, i) => {
@@ -26,12 +27,52 @@ class CForm extends Component {
     handleFormChange = event => {
         const { name, value } = event.target;
 
-        if (name === 'cardNumber') {
+        this.setState({ [name]: value });
+        this.updateMainState(name, value);
+    };
+
+    replaceMissingChars = cardNumber => {
+        let cardNumberTmp = '#### #### #### ####';
+        cardNumberTmp = cardNumberTmp.split('');
+        let cardNumberArr = cardNumber.split('');
+
+        let maskedCardNumber = [];
+        cardNumberTmp.forEach((val, index) => {
+            cardNumberArr[index]
+                ? maskedCardNumber.push(cardNumberArr[index])
+                : maskedCardNumber.push(val);
+        });
+
+        return maskedCardNumber.join('');
+    };
+
+    onCardNumberChange = event => {
+        let { value, name } = event.target;
+        let cardNumber = value;
+        let cardNumberMaxLength = 19;
+        value = value.replace(/\D/g, '');
+        if (/^3[47]\d{0,13}$/.test(value)) {
+            cardNumber = value
+                .replace(/(\d{4})/, '$1 ')
+                .replace(/(\d{4}) (\d{6})/, '$1 $2 ');
+            cardNumberMaxLength = 17;
+        } else if (/^3(?:0[0-5]|[68]\d)\d{0,11}$/.test(value)) {
+            // diner's club, 14 digits
+            cardNumber = value
+                .replace(/(\d{4})/, '$1 ')
+                .replace(/(\d{4}) (\d{6})/, '$1 $2 ');
+            cardNumberMaxLength = 16;
+        } else if (/^\d{0,16}$/.test(value)) {
+            // regular cc number, 16 digits
+            cardNumber = value
+                .replace(/(\d{4})/, '$1 ')
+                .replace(/(\d{4}) (\d{4})/, '$1 $2 ')
+                .replace(/(\d{4}) (\d{4}) (\d{4})/, '$1 $2 $3 ');
+            cardNumberMaxLength = 19;
         }
 
-        this.setState({ [name]: value });
-
-        this.updateMainState(name, value);
+        this.setState({ [name]: cardNumber.trimRight() });
+        this.updateMainState(name, cardNumber);
     };
 
     onCvvFocus = event => {
@@ -68,11 +109,12 @@ class CForm extends Component {
                             name="cardNumber"
                             className="card-input__input"
                             autoComplete="off"
-                            onChange={this.handleFormChange}
+                            onChange={this.onCardNumberChange}
                             maxLength="19"
                             ref={cardNumberRef}
                             onFocus={e => onCardInputFocus(e, 'cardNumber')}
                             onBlur={onCardInputBlur}
+                            value={this.state.cardNumber}
                         />
                     </div>
 

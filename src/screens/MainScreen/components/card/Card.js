@@ -9,14 +9,15 @@ import './styles.scss';
 class Card extends Component {
     constructor() {
         super();
+
+        const backgroundImgname = this.cardBackgroundName();
         this.state = {
             style: {},
-            counter: 0
+            counter: 0,
+            backgroundImgname: backgroundImgname
         };
     }
 
-    // const [style, setStyle] = useState({});
-    // const [counter, setCounter] = useState(0);
     cardType = () => {
         const number = this.props.cardNumber;
 
@@ -39,6 +40,11 @@ class Card extends Component {
         if (number.match(re) != null) return 'troy';
 
         return 'visa'; // default type
+    };
+
+    cardBackgroundName = () => {
+        let random = Math.floor(Math.random() * 25 + 1);
+        return `${random}.jpeg`;
     };
 
     removeEmptySpaces = cardNumber => {
@@ -89,15 +95,6 @@ class Card extends Component {
         return cardNumberArr;
     }
 
-    // useEffect(() => {
-    //     const style = outlineElementStyle(currentFocusedElm);
-    //     setStyle(style);
-    // }, [currentFocusedElm]);
-
-    // useEffect(() => {
-    //     setCounter(counter + 1);
-    // }, [cardMonth]);
-
     render() {
         let {
             cardHolder,
@@ -116,9 +113,6 @@ class Card extends Component {
         const cardHolderArr = cardHolder.split('');
         const cardNumberArr = this.maskCardNumber(cardNumber);
         cardCvv = cardCvv.split('');
-        // const cardNumberTrimmed = removeEmptySpaces(cardNumber.trim(' '));
-
-        // const { style } = this.state;
 
         return (
             <div className={'card-item ' + (isCardFlipped ? '-active' : '')}>
@@ -133,7 +127,7 @@ class Card extends Component {
                         <img
                             src={
                                 process.env.PUBLIC_URL +
-                                '/card-background/5.jpeg'
+                                `/card-background/${this.state.backgroundImgname}`
                             }
                             className="card-item__bg"
                         />
