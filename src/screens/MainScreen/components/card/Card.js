@@ -6,6 +6,15 @@ import {
 } from 'react-transition-group';
 import './styles.scss';
 
+const CARDS = {
+    visa: '^4',
+    amex: '^(34|37)',
+    mastercard: '^5[1-5]',
+    discover: '^6011',
+    unionpay: '^62',
+    troy: '^9792',
+};
+
 class Card extends Component {
     constructor() {
         super();
@@ -20,24 +29,13 @@ class Card extends Component {
 
     cardType = () => {
         const number = this.props.cardNumber;
-
-        let re = new RegExp('^4');
-        if (number.match(re) != null) return 'visa';
-
-        re = new RegExp('^(34|37)');
-        if (number.match(re) != null) return 'amex';
-
-        re = new RegExp('^5[1-5]');
-        if (number.match(re) != null) return 'mastercard';
-
-        re = new RegExp('^6011');
-        if (number.match(re) != null) return 'discover';
-
-        re = new RegExp('^62');
-        if (number.match(re) != null) return 'unionpay';
-
-        re = new RegExp('^9792');
-        if (number.match(re) != null) return 'troy';
+        let re;
+        for (const [card, pattern] of Object.entries(CARDS)) {
+            re = new RegExp(pattern);
+            if (number.match(re) != null) {
+                return card;
+            }
+        }
 
         return 'visa'; // default type
     };
