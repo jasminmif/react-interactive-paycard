@@ -1,7 +1,6 @@
-import React, { Component, useState, createRef } from 'react';
+import React, { useState } from 'react';
 import CForm from './components/form';
 import Card from './components/card';
-// import './MainScreen.scss';
 
 const defaultCardNo = '#### #### #### ####';
 const defaultCardHolderName = 'FULL NAME';
@@ -9,7 +8,7 @@ const defaultCardMonth = '';
 const defaultCardYear = '';
 const defaultCardCvv = '';
 
-const MainScreen = ({}) => {
+const MainScreen = () => {
     const initialState = {
         cardNumber: defaultCardNo,
         cardHolder: defaultCardHolderName,
