@@ -50,7 +50,7 @@ class Card extends Component {
     };
 
     shouldMaskNumber = (cardNumber, index) => {
-        if (cardNumber.length == 15) {
+        if (cardNumber.length === 15) {
             return index > 4 && index < 12;
         } else {
             return index > 4 && index < 13;
@@ -70,10 +70,10 @@ class Card extends Component {
     };
 
     componentDidUpdate(prevProps) {
-        const { currentFocusedElm, cardMonth } = this.props;
+        const { currentFocusedElm } = this.props;
         if (
             currentFocusedElm &&
-            currentFocusedElm != prevProps.currentFocusedElm
+            currentFocusedElm !== prevProps.currentFocusedElm
         ) {
             const style = this.outlineElementStyle(currentFocusedElm);
             this.setState({ style });
@@ -128,6 +128,7 @@ class Card extends Component {
                                 `/card-background/${this.state.backgroundImgname}`
                             }
                             className="card-item__bg"
+                            alt="Card Background"
                         />
                     </div>
 
@@ -145,6 +146,7 @@ class Card extends Component {
                                         `/card-type/${this.cardType()}.png`
                                     }
                                     className="card-item__typeImg"
+                                    alt="Card Type"
                                 />
                             </div>
                         </div>
@@ -196,7 +198,7 @@ class Card extends Component {
                                         className="slide-fade-up"
                                         component="div"
                                     >
-                                        {cardHolder == 'FULL NAME' ? (
+                                        {cardHolder === 'FULL NAME' ? (
                                             <CSSTransition
                                                 classNames="slide-fade-up"
                                                 timeout={250}
@@ -290,6 +292,7 @@ class Card extends Component {
                                 `/card-background/${this.state.backgroundImgname}`
                             }
                             className="card-item__bg"
+                            alt="Card Background"
                         />
                     </div>
                     <div className="card-item__band"></div>
@@ -307,6 +310,7 @@ class Card extends Component {
                                     '/card-type/visa.png'
                                 }
                                 className="card-item__typeImg"
+                                
                             />
                         </div>
                     </div>
