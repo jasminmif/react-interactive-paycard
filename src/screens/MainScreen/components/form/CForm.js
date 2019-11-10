@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react';
+import React, { Component } from 'react';
 
 class CForm extends Component {
     constructor(props) {
@@ -49,26 +49,22 @@ class CForm extends Component {
     onCardNumberChange = event => {
         let { value, name } = event.target;
         let cardNumber = value;
-        let cardNumberMaxLength = 19;
         value = value.replace(/\D/g, '');
         if (/^3[47]\d{0,13}$/.test(value)) {
             cardNumber = value
                 .replace(/(\d{4})/, '$1 ')
                 .replace(/(\d{4}) (\d{6})/, '$1 $2 ');
-            cardNumberMaxLength = 17;
         } else if (/^3(?:0[0-5]|[68]\d)\d{0,11}$/.test(value)) {
             // diner's club, 14 digits
             cardNumber = value
                 .replace(/(\d{4})/, '$1 ')
                 .replace(/(\d{4}) (\d{6})/, '$1 $2 ');
-            cardNumberMaxLength = 16;
         } else if (/^\d{0,16}$/.test(value)) {
             // regular cc number, 16 digits
             cardNumber = value
                 .replace(/(\d{4})/, '$1 ')
                 .replace(/(\d{4}) (\d{4})/, '$1 $2 ')
                 .replace(/(\d{4}) (\d{4}) (\d{4})/, '$1 $2 $3 ');
-            cardNumberMaxLength = 19;
         }
 
         this.setState({ [name]: cardNumber.trimRight() });

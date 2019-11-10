@@ -50,30 +50,26 @@ class Card extends Component {
     };
 
     shouldMaskNumber = (cardNumber, index) => {
-        if (cardNumber.length == 15) {
+        if (cardNumber.length === 15) {
             return index > 4 && index < 12;
         } else {
             return index > 4 && index < 13;
         }
     };
 
-    outlineElementStyle = element => {
-        const style = element
-            ? {
-                  width: `${element.offsetWidth}px`,
-                  height: `${element.offsetHeight}px`,
-                  transform: `translateX(${element.offsetLeft}px) translateY(${element.offsetTop}px)`
-              }
-            : null;
-
-        return style;
-    };
+    outlineElementStyle = element => element
+        ? {
+            width: `${element.offsetWidth}px`,
+            height: `${element.offsetHeight}px`,
+            transform: `translateX(${element.offsetLeft}px) translateY(${element.offsetTop}px)`
+        }
+        : null;
 
     componentDidUpdate(prevProps) {
-        const { currentFocusedElm, cardMonth } = this.props;
+        const { currentFocusedElm } = this.props;
         if (
             currentFocusedElm &&
-            currentFocusedElm != prevProps.currentFocusedElm
+            currentFocusedElm !== prevProps.currentFocusedElm
         ) {
             const style = this.outlineElementStyle(currentFocusedElm);
             this.setState({ style });
@@ -120,9 +116,10 @@ class Card extends Component {
                             currentFocusedElm ? `-active` : ``
                         }`}
                         style={this.state.style}
-                    ></div>
+                    />
                     <div className="card-item__cover">
                         <img
+                            alt=""
                             src={
                                 process.env.PUBLIC_URL +
                                 `/card-background/${this.state.backgroundImgname}`
@@ -140,6 +137,7 @@ class Card extends Component {
                             />
                             <div className="card-item__type">
                                 <img
+                                    alt={this.cardType()}
                                     src={
                                         process.env.PUBLIC_URL +
                                         `/card-type/${this.cardType()}.png`
@@ -196,7 +194,7 @@ class Card extends Component {
                                         className="slide-fade-up"
                                         component="div"
                                     >
-                                        {cardHolder == 'FULL NAME' ? (
+                                        {cardHolder === 'FULL NAME' ? (
                                             <CSSTransition
                                                 classNames="slide-fade-up"
                                                 timeout={250}
@@ -285,6 +283,7 @@ class Card extends Component {
                 <div className="card-item__side -back">
                     <div className="card-item__cover">
                         <img
+                            alt=""
                             src={
                                 process.env.PUBLIC_URL +
                                 `/card-background/${this.state.backgroundImgname}`
@@ -292,7 +291,7 @@ class Card extends Component {
                             className="card-item__bg"
                         />
                     </div>
-                    <div className="card-item__band"></div>
+                    <div className="card-item__band"/>
                     <div className="card-item__cvv">
                         <div className="card-item__cvvTitle">CVV</div>
                         <div className="card-item__cvvBand">
@@ -302,6 +301,7 @@ class Card extends Component {
                         </div>
                         <div className="card-item__type">
                             <img
+                                alt="card-type"
                                 src={
                                     process.env.PUBLIC_URL +
                                     '/card-type/visa.png'
