@@ -310,7 +310,7 @@ class Card extends Component {
                                     '/card-type/visa.png'
                                 }
                                 className="card-item__typeImg"
-                                
+                                alt="Card Background"
                             />
                         </div>
                     </div>
