@@ -1,0 +1,176 @@
+{
+"options": {
+"detectPull": true
+},
+"checks": {
+".gitignore": {
+"script": "!!(tree.tree.find(t => t.path === '.gitignore'))",
+"message": [
+"The repository must contain a .gitignore file"
+]
+},
+"CHANGELOG": {
+"script": "!!(tree.tree.find(t => t.path === 'CHANGELOG' || t.path === 'CHANGELOG.md'))",
+"message": [
+"The repository must contain a CHANGELOG(.md) file"
+]
+},
+"CODE_OF_CONDUCT": {
+"script": "!!(tree.tree.find(t => t.path === 'CODE_OF_CONDUCT.md'))",
+"message": [
+"The repository must contain a CODE_OF_CONDUCT.md file"
+]
+},
+"CONTRIBUTING": {
+"script": "!!(tree.tree.find(t => t.path === 'CONTRIBUTING.md'))",
+"message": [
+"The repository must contain a CONTRIBUTING.md file"
+]
+},
+"LICENSE": {
+"script": "!!(tree.tree.find(t => t.path === 'LICENSE'))",
+"message": [
+"The repository must contain a LICENSE file"
+]
+},
+"README": {
+"script": "!!(tree.tree.find(t => t.path === 'README.md'))",
+"message": [
+"Help people interested in this repository understand your project by adding a README."
+]
+},
+"Branch Name": {
+"script": "/^((ft-)|(ch-)|(bg-))[a-z0-9\\-]+$/.test(branch.name)",
+"message": [
+"Branches created should be named using the following format:",
+"{story type}-{2-3 word summary}",
+"",
+"{story type} - Indicates the context of the branch and should be one of:",
+"    * bg = Bug",
+"    * ch = Chore",
+"    * ft = Feature",
+"",
+"{2-3 word summary} - Short 2-3 words summary about what the branch contains",
+"    This can contain digits, lowercase alphabets, dash.",
+"",
+"Example: ft-resources-rest-endpoints"
+]
+},
+"Commit Message": {
+"script": [
+"const message = commit.commit.message.trim()",
+"const messageLines = message.split('\\n')",
+"const len = messageLines.length",
+"if (len >= 5) {",
+"   if (messageLines[0].trim() !== '' && messageLines[1].trim() === '' && messageLines[2].trim() !== ''",
+"   && messageLines[len - 1].trim() !== '' && messageLines[len - 2].trim() === '' && messageLines[len - 3].trim() !== '') {",
+"       return true;",
+"   }",
+"}",
+"return false;"
+],
+"message": "A commit message consists of a header, a body and a footer, separated by blank lines."
+},
+"Commit Message Lines": {
+"script": [
+"const message = commit.commit.message.trim()",
+"const messageLines = message.split('\\n')",
+"return !(messageLines.find(line => line.length > 100));"
+],
+"message": [
+"Any line of the commit message cannot be longer than 100 characters!",
+"This allows the message to be easier to read on github as well as in various git tools."
+]
+},
+"Commit Message Header": {
+"script": [
+"const message = commit.commit.message.trim()",
+"const messageLines = message.split('\\n')",
+"if (messageLines.length >= 5) {",
+"   const header = messageLines[0]",
+"   return /^(bug|chore|docs|feat|fix|refactor|style|test)(\\([\\w\\s-.]+\\))?:\\s*[a-z].+[^\\.]$/.test(header)",
+"}",
+"return false;"
+],
+"message": [
+"The commit message header is a single line that contains succinct description",
+"of the change containing a type, an optional scope and a subject.",
+"The commit message header should be in the following format:",
+"`{type}({scope}): {subject}`",
+"",
+"`type` - This describes the kind of change that this commit is providing.",
+"  * feat (feature)",
+"  * fix (bug fix)",
+"  * chore (maintain)",
+"  * docs (documentation)",
+"  * style (formatting, missing semi colons, …)",
+"  * refactor",
+"  * test (when adding missing tests)",
+"",
+"`scope` - can be anything specifying place of the commit change",
+"",
+"`subject` - This is a very short description of the change.",
+"  * use imperative, present tense: “change” not “changed” nor “changes”",
+"  * don't capitalize first letter",
+"  * no dot (.) at the end"
+]
+},
+"Commit Message Footer": {
+"skip": true,
+"script": [
+"const message = commit.commit.message.trim()",
+"const messageLines = message.split('\\n')",
+"if (messageLines.length >= 5) {",
+"   const footer = messageLines[messageLines.length - 1]",
+"   return /^\\[([Ss]tarts|[Ff]inishes|[Ff]ixes|[Dd]elivers)?\\s*#[0-9]+]$/.test(footer)",
+"}",
+"return false;"
+],
+"message": [
+"Started, finished, fixed or delivered stories should be listed in the footer",
+"prefixed with 'Finishes', 'Fixes' , or 'Delivers' keyword like this:",
+"",
+"[Finishes #1234567]"
+]
+},
+"PR Title": {
+"script": "/^[\\w\\s-().]+$/.test(pull.title)",
+"message": [
+"The PR title should be in the following format:",
+"`{story description}`",
+"",
+"Example of a valid PR title:",
+"",
+"Build out REST Endpoint for Resources (CRUD)"
+]
+},
+"PR Description": {
+"script": [
+"const body = pull.body",
+"return body.indexOf('#### What does this PR do?') > -1",
+"       && body.indexOf('#### Description of task to be completed?') > -1",
+"       && body.indexOf('#### How should this be manually tested?') > -1",
+"       && body.indexOf('#### Any background context you want to provide?') > -1",
+"       && body.indexOf('#### What are the relevant pivotal tracker stories?') > -1",
+"       && body.indexOf('#### Screenshots (if appropriate)') > -1",
+"       && body.indexOf('#### Questions') > -1"
+],
+"message": [
+"The description of the PR should contain the following headings",
+"and corresponding content in Markdown format.",
+"",
+"`#### What does this PR do?`",
+"`#### Description of task to be completed?`",
+"`#### How should this be manually tested?`",
+"`#### Any background context you want to provide?`",
+"`#### What are the relevant pivotal tracker stories?`",
+"`#### Screenshots (if appropriate)`",
+"`#### Questions:`"
+]
+},
+"PR 'ready' Label": {
+"script": "pull.labels.length === 1 && !!(pull.labels.find(l => l.name === 'ready'))",
+"message": "PR must have label 'ready'"
+}
+}
+}
