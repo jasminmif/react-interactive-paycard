@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import CForm from './components/form';
 import Card from './components/card';
 
@@ -39,7 +39,7 @@ const MainScreen = () => {
 
     // References for the Form Inputs
     let formFieldsRefObj = {
-        cardNumber: null,
+        cardNumber: useRef(),
         cardHolder: null,
         cardDate: null,
         cardCvv: null
@@ -78,7 +78,7 @@ const MainScreen = () => {
         <div className="wrapper">
             <CForm
                 onUpdateStateValue={updateStateValue}
-                cardNumberRef={node => (formFieldsRefObj['cardNumber'] = node)}
+                cardNumberRef={formFieldsRefObj.cardNumber}
                 cardHolderRef={node => (formFieldsRefObj['cardHolder'] = node)}
                 cardDateRef={node => (formFieldsRefObj['cardDate'] = node)}
                 onCardInputFocus={onCardFormInputFocus}
