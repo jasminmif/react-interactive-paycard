@@ -13,7 +13,7 @@ class CForm extends Component {
                 const month = i + 1;
                 return month <= 9 ? '0' + month : month;
             }),
-            yearsArr: Array.from(new Array(9), (x, i) => currentYear + i)
+            yearsArr: Array.from(new Array(20), (x, i) => currentYear + i)
         };
     }
 
