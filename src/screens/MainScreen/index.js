@@ -40,9 +40,9 @@ const MainScreen = () => {
     // References for the Form Inputs
     let formFieldsRefObj = {
         cardNumber: useRef(),
-        cardHolder: null,
-        cardDate: null,
-        cardCvv: null
+        cardHolder: useRef(),
+        cardDate: useRef(),
+        cardCvv: useRef()
     };
 
     let onCardElementClick = key => {
@@ -50,7 +50,7 @@ const MainScreen = () => {
     };
 
     let focusFormFieldByKey = key => {
-        formFieldsRefObj[key].focus();
+        formFieldsRefObj[key].current.focus();
     };
 
     // This are the references for the Card DIV elements
@@ -79,8 +79,8 @@ const MainScreen = () => {
             <CForm
                 onUpdateStateValue={updateStateValue}
                 cardNumberRef={formFieldsRefObj.cardNumber}
-                cardHolderRef={node => (formFieldsRefObj['cardHolder'] = node)}
-                cardDateRef={node => (formFieldsRefObj['cardDate'] = node)}
+                cardHolderRef={formFieldsRefObj.cardHolder}
+                cardDateRef={formFieldsRefObj.cardDate}
                 onCardInputFocus={onCardFormInputFocus}
                 onCardInputBlur={onCardInputBlur}
             >
