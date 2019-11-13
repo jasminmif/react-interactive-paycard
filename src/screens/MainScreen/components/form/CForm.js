@@ -79,6 +79,36 @@ class CForm extends Component {
         this.updateMainState('isCardFlipped', false);
     };
 
+    getSnapshotBeforeUpdate() {
+      return this.props.cardNumberRef.current.selectionStart;
+    }
+
+    /* Modifying the cardNumber input anywhere but the end of
+    the line causes the cursor to jump to the end. This is
+    because the value is reformatted with different spacing
+    (ie. react doesn't know what to do with the cursor for
+    changes between re-renders)
+
+    https://github.com/facebook/react/issues/955#issuecomment-150714427
+
+    This issue is fixed by manually repositioning the cursor
+    to account for any additional spacing that is added/removed
+    */
+    componentDidUpdate(prevProps, prevState, cursorIdx) {
+      const node = this.props.cardNumberRef.current;
+      const { cardNumber: cardNum } = this.state;
+      const { cardNumber: prevCardNum } = prevState;
+      if (
+        cardNum.length > prevCardNum.length &&
+        cardNum[cursorIdx - 1] === " "
+      ) {
+        cursorIdx += 1;
+      } else if (prevCardNum[cursorIdx - 1] === " ") {
+        cursorIdx -= 1;
+      }
+      node.selectionStart = node.selectionEnd = cursorIdx;
+    }
+
     render() {
         const { cardMonth, cardYear, monthsArr, yearsArr } = this.state;
         const {

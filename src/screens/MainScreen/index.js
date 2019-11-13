@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import CForm from './components/form';
 import Card from './components/card';
 
@@ -39,10 +39,10 @@ const MainScreen = () => {
 
     // References for the Form Inputs
     let formFieldsRefObj = {
-        cardNumber: null,
-        cardHolder: null,
-        cardDate: null,
-        cardCvv: null
+        cardNumber: useRef(),
+        cardHolder: useRef(),
+        cardDate: useRef(),
+        cardCvv: useRef()
     };
 
     let onCardElementClick = key => {
@@ -50,7 +50,7 @@ const MainScreen = () => {
     };
 
     let focusFormFieldByKey = key => {
-        formFieldsRefObj[key].focus();
+        formFieldsRefObj[key].current.focus();
     };
 
     // This are the references for the Card DIV elements
@@ -78,9 +78,9 @@ const MainScreen = () => {
         <div className="wrapper">
             <CForm
                 onUpdateStateValue={updateStateValue}
-                cardNumberRef={node => (formFieldsRefObj['cardNumber'] = node)}
-                cardHolderRef={node => (formFieldsRefObj['cardHolder'] = node)}
-                cardDateRef={node => (formFieldsRefObj['cardDate'] = node)}
+                cardNumberRef={formFieldsRefObj.cardNumber}
+                cardHolderRef={formFieldsRefObj.cardHolder}
+                cardDateRef={formFieldsRefObj.cardDate}
                 onCardInputFocus={onCardFormInputFocus}
                 onCardInputBlur={onCardInputBlur}
             >
