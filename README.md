@@ -16,6 +16,11 @@ A fantastic credit card form with smooth and sweet micro-interactions. Includes 
 
 In the project directory, you can run:
 
+### `npm install`
+
+Installs all the required packages.
+You must run this command before start the development mode.
+
 ### `npm start`
 
 Runs the app in the development mode.<br />
