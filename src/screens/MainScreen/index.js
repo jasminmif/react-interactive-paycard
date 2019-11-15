@@ -35,7 +35,7 @@ const MainScreen = () => {
         cardCvv,
         isCardFlipped
     } = state;
-    var { currentFocusedElm } = state;
+    let { currentFocusedElm } = state;
 
     // References for the Form Inputs
     let formFieldsRefObj = {
