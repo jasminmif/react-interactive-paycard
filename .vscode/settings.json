@@ -1,0 +1,5 @@
+{
+    "prettier.singleQuote": true,
+    "javascript.preferences.quoteStyle": "single",
+    "prettier.tabWidth": 4
+}

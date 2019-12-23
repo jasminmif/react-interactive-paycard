@@ -12,7 +12,7 @@ const CARDS = {
     mastercard: '^5[1-5]',
     discover: '^6011',
     unionpay: '^62',
-    troy: '^9792',
+    troy: '^9792'
 };
 
 class Card extends Component {
@@ -57,13 +57,14 @@ class Card extends Component {
         }
     };
 
-    outlineElementStyle = element => element
-        ? {
-            width: `${element.offsetWidth}px`,
-            height: `${element.offsetHeight}px`,
-            transform: `translateX(${element.offsetLeft}px) translateY(${element.offsetTop}px)`
-        }
-        : null;
+    outlineElementStyle = element =>
+        element
+            ? {
+                  width: `${element.offsetWidth}px`,
+                  height: `${element.offsetHeight}px`,
+                  transform: `translateX(${element.offsetLeft}px) translateY(${element.offsetTop}px)`
+              }
+            : null;
 
     componentDidUpdate(prevProps) {
         const { currentFocusedElm } = this.props;
@@ -291,13 +292,21 @@ class Card extends Component {
                             className="card-item__bg"
                         />
                     </div>
-                    <div className="card-item__band"/>
+                    <div className="card-item__band" />
                     <div className="card-item__cvv">
                         <div className="card-item__cvvTitle">CVV</div>
                         <div className="card-item__cvvBand">
-                            {cardCvv.map((val, index) => (
-                                <span key={index}>*</span>
-                            ))}
+                            <TransitionGroup>
+                                {cardCvv.map((val, index) => (
+                                    <CSSTransition
+                                        classNames="zoom-in-out"
+                                        key={index}
+                                        timeout={250}
+                                    >
+                                        <span>*</span>
+                                    </CSSTransition>
+                                ))}
+                            </TransitionGroup>
                         </div>
                         <div className="card-item__type">
                             <img
