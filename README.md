@@ -6,9 +6,9 @@ I did some minor changes on the animations and optimizations on the code.
 A fantastic credit card form with smooth and sweet micro-interactions. Includes number formatting, validation and automatic card type detection. Built with reactjs and also fully responsive
 
 ### Demo
-
-![](demo.gif)
 [https://codesandbox.io/s/github/jasminmif/react-interactive-paycard/tree/master/?fontsize=14&hidenavigation=1&theme=dark](https://codesandbox.io/s/github/jasminmif/react-interactive-paycard/tree/master/?fontsize=14&hidenavigation=1&theme=dark)
+![](demo.gif)
+
 
 ## Libraries used
 
