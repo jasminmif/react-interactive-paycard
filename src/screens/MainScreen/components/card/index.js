@@ -15,6 +15,11 @@ const CARDS = {
     troy: '^9792'
 };
 
+// this is used so Sandbox can read the github images
+const staticFilesUrl =
+    process.env.PUBLIC_URL ||
+    'https://raw.githubusercontent.com/jasminmif/react-interactive-paycard/master/public/';
+
 class Card extends Component {
     constructor() {
         super();
@@ -26,6 +31,11 @@ class Card extends Component {
             backgroundImgname: backgroundImgname
         };
     }
+
+    // Url for Background from git
+    // process.ENV.PUBLIC_URL is null than get the images from
+    // https://raw.githubusercontent.com/jasminmif/react-interactive-paycard/master/public/card-background/1.jpeg
+    // for the sandbox to work
 
     cardType = () => {
         const number = this.props.cardNumber;
@@ -122,7 +132,7 @@ class Card extends Component {
                         <img
                             alt=""
                             src={
-                                process.env.PUBLIC_URL +
+                                staticFilesUrl +
                                 `/card-background/${this.state.backgroundImgname}`
                             }
                             className="card-item__bg"
@@ -132,7 +142,7 @@ class Card extends Component {
                     <div className="card-item__wrapper">
                         <div className="card-item__top">
                             <img
-                                src={process.env.PUBLIC_URL + '/chip.png'}
+                                src={staticFilesUrl + '/chip.png'}
                                 alt=""
                                 className="card-item__chip"
                             />
@@ -140,7 +150,7 @@ class Card extends Component {
                                 <img
                                     alt={this.cardType()}
                                     src={
-                                        process.env.PUBLIC_URL +
+                                        staticFilesUrl +
                                         `/card-type/${this.cardType()}.png`
                                     }
                                     className="card-item__typeImg"
@@ -286,7 +296,7 @@ class Card extends Component {
                         <img
                             alt=""
                             src={
-                                process.env.PUBLIC_URL +
+                                staticFilesUrl +
                                 `/card-background/${this.state.backgroundImgname}`
                             }
                             className="card-item__bg"
@@ -311,10 +321,7 @@ class Card extends Component {
                         <div className="card-item__type">
                             <img
                                 alt="card-type"
-                                src={
-                                    process.env.PUBLIC_URL +
-                                    '/card-type/visa.png'
-                                }
+                                src={staticFilesUrl + '/card-type/visa.png'}
                                 className="card-item__typeImg"
                             />
                         </div>
