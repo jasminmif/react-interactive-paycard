@@ -379,6 +379,10 @@
         @media screen and (max-width: 360px) {
             margin-bottom: 15px;
         }
+
+        span {
+            display: inline-block;
+        }
     }
 }
 
@@ -440,4 +444,34 @@
 
 .slide-fade-up-exit-done {
     opacity: 0;
+}
+
+.zoom-in-out-enter {
+    transform: translateY(6px) scale(3.5);
+    transition-delay: 0.1s;
+    filter: blur(0.4px);
+    opacity: 0;
+}
+
+.zoom-in-out-enter-active {
+    transition: all 250ms ease-in-out;
+    transform: translateY(0px) scale(1);
+    filter: blur(0px);
+    opacity: 1;
+}
+
+.zoom-in-out-enter-done {
+    opacity: 1;
+}
+
+.zoom-in-out-exit {
+    opacity: 1;
+}
+
+.zoom-in-out-exit-active {
+    transition: all 150ms ease-in-out;
+    transition-delay: 0.1s;
+    transform: translateY(4px) scale(2.3);
+    filter: blur(0.4px);
+    position: relative;
 }
