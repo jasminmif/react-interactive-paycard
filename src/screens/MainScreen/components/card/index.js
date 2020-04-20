@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
     CSSTransition,
     TransitionGroup,
-    SwitchTransition
+    SwitchTransition,
 } from 'react-transition-group';
 import './styles.scss';
 
@@ -12,30 +12,20 @@ const CARDS = {
     mastercard: '^5[1-5]',
     discover: '^6011',
     unionpay: '^62',
-    troy: '^9792'
+    troy: '^9792',
 };
-
-// this is used so Sandbox can read the github images
-const staticFilesUrl =
-    process.env.PUBLIC_URL ||
-    'https://raw.githubusercontent.com/jasminmif/react-interactive-paycard/master/public/';
 
 class Card extends Component {
     constructor() {
         super();
 
-        const backgroundImgname = this.cardBackgroundName();
+        const bgImageName = this.cardBackgroundName();
         this.state = {
             style: {},
             counter: 0,
-            backgroundImgname: backgroundImgname
+            bgImageName: bgImageName,
         };
     }
-
-    // Url for Background from git
-    // process.ENV.PUBLIC_URL is null than get the images from
-    // https://raw.githubusercontent.com/jasminmif/react-interactive-paycard/master/public/card-background/1.jpeg
-    // for the sandbox to work
 
     cardType = () => {
         const number = this.props.cardNumber;
@@ -55,7 +45,7 @@ class Card extends Component {
         return `${random}.jpeg`;
     };
 
-    removeEmptySpaces = cardNumber => {
+    removeEmptySpaces = (cardNumber) => {
         return cardNumber.replace(/\s+/g, '');
     };
 
@@ -67,12 +57,12 @@ class Card extends Component {
         }
     };
 
-    outlineElementStyle = element =>
+    outlineElementStyle = (element) =>
         element
             ? {
                   width: `${element.offsetWidth}px`,
                   height: `${element.offsetHeight}px`,
-                  transform: `translateX(${element.offsetLeft}px) translateY(${element.offsetTop}px)`
+                  transform: `translateX(${element.offsetLeft}px) translateY(${element.offsetTop}px)`,
               }
             : null;
 
@@ -112,7 +102,7 @@ class Card extends Component {
             onCardElementClick,
             cardNumberRef,
             cardHolderRef,
-            cardDateRef
+            cardDateRef,
         } = this.props;
 
         const cardHolderArr = cardHolder.split('');
@@ -131,10 +121,7 @@ class Card extends Component {
                     <div className="card-item__cover">
                         <img
                             alt=""
-                            src={
-                                staticFilesUrl +
-                                `/card-background/${this.state.backgroundImgname}`
-                            }
+                            src={`/card-background/${this.state.bgImageName}`}
                             className="card-item__bg"
                         />
                     </div>
@@ -142,17 +129,14 @@ class Card extends Component {
                     <div className="card-item__wrapper">
                         <div className="card-item__top">
                             <img
-                                src={staticFilesUrl + '/chip.png'}
+                                src={'/chip.png'}
                                 alt=""
                                 className="card-item__chip"
                             />
                             <div className="card-item__type">
                                 <img
                                     alt={this.cardType()}
-                                    src={
-                                        staticFilesUrl +
-                                        `/card-type/${this.cardType()}.png`
-                                    }
+                                    src={`/card-type/${this.cardType()}.png`}
                                     className="card-item__typeImg"
                                 />
                             </div>
@@ -295,10 +279,7 @@ class Card extends Component {
                     <div className="card-item__cover">
                         <img
                             alt=""
-                            src={
-                                staticFilesUrl +
-                                `/card-background/${this.state.backgroundImgname}`
-                            }
+                            src={`/card-background/${this.state.bgImageName}`}
                             className="card-item__bg"
                         />
                     </div>
@@ -321,7 +302,7 @@ class Card extends Component {
                         <div className="card-item__type">
                             <img
                                 alt="card-type"
-                                src={staticFilesUrl + '/card-type/visa.png'}
+                                src={'/card-type/visa.png'}
                                 className="card-item__typeImg"
                             />
                         </div>

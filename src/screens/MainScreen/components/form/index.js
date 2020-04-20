@@ -1,37 +1,37 @@
 import React, { Component } from 'react';
 
+const currentYear = new Date().getFullYear();
 class CForm extends Component {
     constructor(props) {
         super(props);
 
-        const currentYear = new Date().getFullYear();
         this.state = {
             cardNumber: '',
             cardMonth: '',
             cardYear: '',
-            monthsArr: Array.from(new Array(12), (x, i) => {
+            monthsArr: Array.from({ length: 12 }, (x, i) => {
                 const month = i + 1;
                 return month <= 9 ? '0' + month : month;
             }),
-            yearsArr: Array.from(new Array(9), (x, i) => currentYear + i)
+            yearsArr: Array.from({ length: 9 }, (_x, i) => currentYear + i),
         };
     }
 
     updateMainState = (name, value) => {
         this.props.onUpdateStateValue({
             name,
-            value
+            value,
         });
     };
 
-    handleFormChange = event => {
+    handleFormChange = (event) => {
         const { name, value } = event.target;
 
         this.setState({ [name]: value });
         this.updateMainState(name, value);
     };
 
-    replaceMissingChars = cardNumber => {
+    replaceMissingChars = (cardNumber) => {
         let cardNumberTmp = '#### #### #### ####';
         cardNumberTmp = cardNumberTmp.split('');
         let cardNumberArr = cardNumber.split('');
@@ -46,7 +46,7 @@ class CForm extends Component {
         return maskedCardNumber.join('');
     };
 
-    onCardNumberChange = event => {
+    onCardNumberChange = (event) => {
         let { value, name } = event.target;
         let cardNumber = value;
         value = value.replace(/\D/g, '');
@@ -71,16 +71,16 @@ class CForm extends Component {
         this.updateMainState(name, cardNumber);
     };
 
-    onCvvFocus = event => {
+    onCvvFocus = (event) => {
         this.updateMainState('isCardFlipped', true);
     };
 
-    onCvvBlur = event => {
+    onCvvBlur = (event) => {
         this.updateMainState('isCardFlipped', false);
     };
 
     getSnapshotBeforeUpdate() {
-      return this.props.cardNumberRef.current.selectionStart;
+        return this.props.cardNumberRef.current.selectionStart;
     }
 
     /* Modifying the cardNumber input anywhere but the end of
@@ -95,18 +95,18 @@ class CForm extends Component {
     to account for any additional spacing that is added/removed
     */
     componentDidUpdate(prevProps, prevState, cursorIdx) {
-      const node = this.props.cardNumberRef.current;
-      const { cardNumber: cardNum } = this.state;
-      const { cardNumber: prevCardNum } = prevState;
-      if (
-        cardNum.length > prevCardNum.length &&
-        cardNum[cursorIdx - 1] === " "
-      ) {
-        cursorIdx += 1;
-      } else if (prevCardNum[cursorIdx - 1] === " ") {
-        cursorIdx -= 1;
-      }
-      node.selectionStart = node.selectionEnd = cursorIdx;
+        const node = this.props.cardNumberRef.current;
+        const { cardNumber: cardNum } = this.state;
+        const { cardNumber: prevCardNum } = prevState;
+        if (
+            cardNum.length > prevCardNum.length &&
+            cardNum[cursorIdx - 1] === ' '
+        ) {
+            cursorIdx += 1;
+        } else if (prevCardNum[cursorIdx - 1] === ' ') {
+            cursorIdx -= 1;
+        }
+        node.selectionStart = node.selectionEnd = cursorIdx;
     }
 
     render() {
@@ -117,7 +117,7 @@ class CForm extends Component {
             cardDateRef,
             cardCvvRef,
             onCardInputFocus,
-            onCardInputBlur
+            onCardInputBlur,
         } = this.props;
         return (
             <div className="card-form">
@@ -138,7 +138,7 @@ class CForm extends Component {
                             onChange={this.onCardNumberChange}
                             maxLength="19"
                             ref={cardNumberRef}
-                            onFocus={e => onCardInputFocus(e, 'cardNumber')}
+                            onFocus={(e) => onCardInputFocus(e, 'cardNumber')}
                             onBlur={onCardInputBlur}
                             value={this.state.cardNumber}
                         />
@@ -155,7 +155,7 @@ class CForm extends Component {
                             name="cardHolder"
                             onChange={this.handleFormChange}
                             ref={cardHolderRef}
-                            onFocus={e => onCardInputFocus(e, 'cardHolder')}
+                            onFocus={(e) => onCardInputFocus(e, 'cardHolder')}
                             onBlur={onCardInputBlur}
                         />
                     </div>
@@ -175,7 +175,7 @@ class CForm extends Component {
                                     name="cardMonth"
                                     onChange={this.handleFormChange}
                                     ref={cardDateRef}
-                                    onFocus={e =>
+                                    onFocus={(e) =>
                                         onCardInputFocus(e, 'cardDate')
                                     }
                                     onBlur={onCardInputBlur}
@@ -195,7 +195,7 @@ class CForm extends Component {
                                     className="card-input__input -select"
                                     value={cardYear}
                                     onChange={this.handleFormChange}
-                                    onFocus={e =>
+                                    onFocus={(e) =>
                                         onCardInputFocus(e, 'cardDate')
                                     }
                                     onBlur={onCardInputBlur}
