@@ -15,7 +15,7 @@ const initialState = {
 const MainScreen = () => {
     const [state, setState] = useState(initialState);
 
-    const updateStateValues = ({ name: keyName, value }) => {
+    const updateStateValues = (keyName, value) => {
         setState({
             ...state,
             [keyName]: value || initialState[keyName],
@@ -30,10 +30,6 @@ const MainScreen = () => {
         cardCvv: useRef(),
     };
 
-    let onCardElementClick = (key) => {
-        focusFormFieldByKey(key);
-    };
-
     let focusFormFieldByKey = (key) => {
         formFieldsRefObj[key].current.focus();
     };
@@ -46,13 +42,14 @@ const MainScreen = () => {
     };
 
     let onCardFormInputFocus = (_event, inputName) => {
+        const refByName = cardElementsRef[inputName];
         setState({
             ...state,
-            currentFocusedElm: cardElementsRef[inputName],
+            currentFocusedElm: refByName,
         });
     };
 
-    let onCardInputBlur = (event) => {
+    let onCardInputBlur = () => {
         setState({
             ...state,
             currentFocusedElm: null,
@@ -62,7 +59,9 @@ const MainScreen = () => {
     return (
         <div className="wrapper">
             <CForm
-                onUpdateStateValue={updateStateValues}
+                cardMonth={state.cardMonth}
+                cardYear={state.cardYear}
+                onUpdateState={updateStateValues}
                 cardNumberRef={formFieldsRefObj.cardNumber}
                 cardHolderRef={formFieldsRefObj.cardHolder}
                 cardDateRef={formFieldsRefObj.cardDate}
@@ -77,7 +76,7 @@ const MainScreen = () => {
                     cardCvv={state.cardCvv}
                     isCardFlipped={state.isCardFlipped}
                     currentFocusedElm={state.currentFocusedElm}
-                    onCardElementClick={onCardElementClick}
+                    onCardElementClick={focusFormFieldByKey}
                     cardNumberRef={(node) =>
                         (cardElementsRef['cardNumber'] = node)
                     }

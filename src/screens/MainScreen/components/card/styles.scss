@@ -407,7 +407,7 @@
 .slide-fade-right-exit-active {
     opacity: 0;
     transition: all 0.25s ease-in-out;
-    transform: translateX(0px) rotate(-80deg);
+    transform: translateX(30px) rotate(-80deg);
     position: relative;
 }
 
@@ -426,6 +426,7 @@
 }
 
 .slide-fade-up-enter-done {
+    transform: translateY(0px);
     opacity: 1;
 }
 

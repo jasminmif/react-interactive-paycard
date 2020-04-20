@@ -186,8 +186,8 @@ class Card extends Component {
                                 </div>
                                 <div className="card-item__name">
                                     <TransitionGroup
-                                        className="slide-fade-up"
                                         component="div"
+                                        className="slide-fade-up"
                                     >
                                         {cardHolder === 'FULL NAME' ? (
                                             <CSSTransition
@@ -222,23 +222,15 @@ class Card extends Component {
                                 </label>
                                 <label className="card-item__dateItem">
                                     <SwitchTransition in-out>
-                                        {!cardMonth ? (
-                                            <CSSTransition
-                                                classNames="slide-fade-up"
-                                                timeout={250}
-                                                key={cardMonth}
-                                            >
-                                                <span>MM</span>
-                                            </CSSTransition>
-                                        ) : (
-                                            <CSSTransition
-                                                classNames="slide-fade-up"
-                                                timeout={250}
-                                                key={cardMonth}
-                                            >
-                                                <span>{cardMonth}</span>
-                                            </CSSTransition>
-                                        )}
+                                        <CSSTransition
+                                            classNames="slide-fade-up"
+                                            timeout={200}
+                                            key={cardMonth}
+                                        >
+                                            <span>
+                                                {!cardMonth ? 'MM' : cardMonth}{' '}
+                                            </span>
+                                        </CSSTransition>
                                     </SwitchTransition>
                                 </label>
                                 /
@@ -247,27 +239,19 @@ class Card extends Component {
                                     className="card-item__dateItem"
                                 >
                                     <SwitchTransition out-in>
-                                        {!cardYear ? (
-                                            <CSSTransition
-                                                classNames="slide-fade-up"
-                                                timeout={250}
-                                                key={cardYear}
-                                            >
-                                                <span>YY</span>
-                                            </CSSTransition>
-                                        ) : (
-                                            <CSSTransition
-                                                classNames="slide-fade-up"
-                                                timeout={250}
-                                                key={cardYear}
-                                            >
-                                                <span>
-                                                    {cardYear
-                                                        .toString()
-                                                        .substr(-2)}
-                                                </span>
-                                            </CSSTransition>
-                                        )}
+                                        <CSSTransition
+                                            classNames="slide-fade-up"
+                                            timeout={250}
+                                            key={cardYear}
+                                        >
+                                            <span>
+                                                {!cardYear
+                                                    ? 'YY'
+                                                    : cardYear
+                                                          .toString()
+                                                          .substr(-2)}
+                                            </span>
+                                        </CSSTransition>
                                     </SwitchTransition>
                                 </label>
                             </div>
