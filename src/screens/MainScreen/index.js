@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import CForm from './components/form';
 import Card from './components/card';
 
@@ -8,53 +8,50 @@ const initialState = {
     cardMonth: '',
     cardYear: '',
     cardCvv: '',
-    isCardFlipped: false,
-    currentFocusedElm: null,
+    isCardFlipped: false
 };
 
 const MainScreen = () => {
     const [state, setState] = useState(initialState);
+    const [currentFocusedElm, setCurrentFocusedElm] = useState(null);
 
-    const updateStateValues = (keyName, value) => {
-        setState({
-            ...state,
-            [keyName]: value || initialState[keyName],
-        });
-    };
+    const updateStateValues = useCallback(
+        (keyName, value) => {
+            setState({
+                ...state,
+                [keyName]: value || initialState[keyName]
+            });
+        },
+        [state]
+    );
 
     // References for the Form Inputs
     let formFieldsRefObj = {
         cardNumber: useRef(),
         cardHolder: useRef(),
         cardDate: useRef(),
-        cardCvv: useRef(),
+        cardCvv: useRef()
     };
 
-    let focusFormFieldByKey = (key) => {
+    let focusFormFieldByKey = useCallback((key) => {
         formFieldsRefObj[key].current.focus();
-    };
+    }, []);
 
     // This are the references for the Card DIV elements
     let cardElementsRef = {
         cardNumber: null,
         cardHolder: null,
-        cardDate: null,
+        cardDate: null
     };
 
     let onCardFormInputFocus = (_event, inputName) => {
         const refByName = cardElementsRef[inputName];
-        setState({
-            ...state,
-            currentFocusedElm: refByName,
-        });
+        setCurrentFocusedElm(refByName);
     };
 
-    let onCardInputBlur = () => {
-        setState({
-            ...state,
-            currentFocusedElm: null,
-        });
-    };
+    let onCardInputBlur = useCallback(() => {
+        setCurrentFocusedElm(null);
+    }, []);
 
     return (
         <div className="wrapper">
@@ -75,7 +72,7 @@ const MainScreen = () => {
                     cardYear={state.cardYear}
                     cardCvv={state.cardCvv}
                     isCardFlipped={state.isCardFlipped}
-                    currentFocusedElm={state.currentFocusedElm}
+                    currentFocusedElm={currentFocusedElm}
                     onCardElementClick={focusFormFieldByKey}
                     cardNumberRef={(node) =>
                         (cardElementsRef['cardNumber'] = node)

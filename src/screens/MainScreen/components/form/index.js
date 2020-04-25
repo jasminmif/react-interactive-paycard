@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 const currentYear = new Date().getFullYear();
 const initialState = {
@@ -7,7 +7,7 @@ const initialState = {
         return month <= 9 ? '0' + month : month;
     }),
     yearsArr: Array.from({ length: 9 }, (_x, i) => currentYear + i),
-    cardNumber: '',
+    cardNumber: ''
 };
 
 export default function CForm({
@@ -19,7 +19,7 @@ export default function CForm({
     cardDateRef,
     onCardInputFocus,
     onCardInputBlur,
-    children,
+    children
 }) {
     const [state, setState] = useState(initialState);
 
@@ -27,21 +27,6 @@ export default function CForm({
         const { name, value } = event.target;
 
         onUpdateState(name, value);
-    };
-
-    const replaceMissingChars = (cardNumber) => {
-        let cardNumberTmp = '#### #### #### ####';
-        cardNumberTmp = cardNumberTmp.split('');
-        let cardNumberArr = cardNumber.split('');
-
-        let maskedCardNumber = [];
-        cardNumberTmp.forEach((val, index) => {
-            cardNumberArr[index]
-                ? maskedCardNumber.push(cardNumberArr[index])
-                : maskedCardNumber.push(val);
-        });
-
-        return maskedCardNumber.join('');
     };
 
     const onCardNumberChange = (event) => {
@@ -67,7 +52,7 @@ export default function CForm({
 
         setState({
             ...state,
-            [name]: cardNumber.trimRight(),
+            [name]: cardNumber.trimRight()
         });
         onUpdateState(name, cardNumber);
     };
@@ -79,12 +64,6 @@ export default function CForm({
     const onCvvBlur = (event) => {
         onUpdateState('isCardFlipped', false);
     };
-
-    // getSnapshotBeforeUpdate() {
-    //     return this.props.cardNumberRef.current.selectionStart;
-    // }
-
-    // useEffect(() => {}, []);
 
     // const componentDidUpdate = function (prevProps, prevState, cursorIdx) {
     //     const node = cardNumberRef.current;
