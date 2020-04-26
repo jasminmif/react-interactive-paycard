@@ -3,11 +3,7 @@ import './App.scss';
 import MainScreen from './screens/MainScreen';
 
 function App() {
-    return (
-        <div className="App">
-            <MainScreen />
-        </div>
-    );
+    return <MainScreen />;
 }
 
 export default App;
