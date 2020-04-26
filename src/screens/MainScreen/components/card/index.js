@@ -54,14 +54,15 @@ const Card = ({
         return cardType(cardNumber);
     }, [cardNumber]);
 
-    const outlineElementStyle = (element) =>
-        element
+    const outlineElementStyle = (element) => {
+        return element
             ? {
                   width: `${element.offsetWidth}px`,
                   height: `${element.offsetHeight}px`,
                   transform: `translateX(${element.offsetLeft}px) translateY(${element.offsetTop}px)`
               }
             : null;
+    };
 
     useEffect(() => {
         if (currentFocusedElm) {
@@ -85,8 +86,6 @@ const Card = ({
         },
         [cardNumber]
     );
-
-    const cardHolderArr = cardHolder.split('');
 
     return (
         <div className={'card-item ' + (isCardFlipped ? '-active' : '')}>
@@ -174,17 +173,19 @@ const Card = ({
                                             <div>FULL NAME</div>
                                         </CSSTransition>
                                     ) : (
-                                        cardHolderArr.map((val, index) => (
-                                            <CSSTransition
-                                                timeout={250}
-                                                classNames="slide-fade-right"
-                                                key={index}
-                                            >
-                                                <span className="card-item__nameItem">
-                                                    {val}
-                                                </span>
-                                            </CSSTransition>
-                                        ))
+                                        cardHolder
+                                            .split('')
+                                            .map((val, index) => (
+                                                <CSSTransition
+                                                    timeout={250}
+                                                    classNames="slide-fade-right"
+                                                    key={index}
+                                                >
+                                                    <span className="card-item__nameItem">
+                                                        {val}
+                                                    </span>
+                                                </CSSTransition>
+                                            ))
                                     )}
                                 </TransitionGroup>
                             </div>
