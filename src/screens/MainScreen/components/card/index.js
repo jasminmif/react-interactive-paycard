@@ -71,21 +71,18 @@ const Card = ({
         }
     }, [currentFocusedElm]);
 
-    const maskCardNumber = useCallback(
-        (cardNumber) => {
-            let cardNumberArr = cardNumber.split('');
-            cardNumberArr.forEach((val, index) => {
-                if (index > 4 && index < 14) {
-                    if (cardNumberArr[index] !== ' ') {
-                        cardNumberArr[index] = '*';
-                    }
+    const maskCardNumber = (cardNumber) => {
+        let cardNumberArr = cardNumber.split('');
+        cardNumberArr.forEach((val, index) => {
+            if (index > 4 && index < 14) {
+                if (cardNumberArr[index] !== ' ') {
+                    cardNumberArr[index] = '*';
                 }
-            });
+            }
+        });
 
-            return cardNumberArr;
-        },
-        [cardNumber]
-    );
+        return cardNumberArr;
+    };
 
     return (
         <div className={'card-item ' + (isCardFlipped ? '-active' : '')}>
