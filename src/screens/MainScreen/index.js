@@ -35,7 +35,7 @@ const MainScreen = () => {
 
     let focusFormFieldByKey = useCallback((key) => {
         formFieldsRefObj[key].current.focus();
-    }, []);
+    });
 
     // This are the references for the Card DIV elements.
     let cardElementsRef = {
