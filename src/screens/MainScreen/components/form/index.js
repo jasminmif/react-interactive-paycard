@@ -1,14 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 
 const currentYear = new Date().getFullYear();
-const initialState = {
-    monthsArr: Array.from({ length: 12 }, (x, i) => {
-        const month = i + 1;
-        return month <= 9 ? '0' + month : month;
-    }),
-    yearsArr: Array.from({ length: 9 }, (_x, i) => currentYear + i),
-    cardNumber: ''
-};
+const monthsArr = Array.from({ length: 12 }, (x, i) => {
+    const month = i + 1;
+    return month <= 9 ? '0' + month : month;
+});
+const yearsArr = Array.from({ length: 9 }, (_x, i) => currentYear + i);
 
 export default function CForm({
     cardMonth,
@@ -19,9 +16,10 @@ export default function CForm({
     cardDateRef,
     onCardInputFocus,
     onCardInputBlur,
+    cardCvv,
     children
 }) {
-    const [state, setState] = useState(initialState);
+    const [cardNumber, setCardNumber] = useState('');
 
     const handleFormChange = (event) => {
         const { name, value } = event.target;
@@ -29,6 +27,7 @@ export default function CForm({
         onUpdateState(name, value);
     };
 
+    // TODO: We can improve the regex check with a better approach like in the card component.
     const onCardNumberChange = (event) => {
         let { value, name } = event.target;
         let cardNumber = value;
@@ -50,10 +49,7 @@ export default function CForm({
                 .replace(/(\d{4}) (\d{4}) (\d{4})/, '$1 $2 $3 ');
         }
 
-        setState({
-            ...state,
-            [name]: cardNumber.trimRight()
-        });
+        setCardNumber(cardNumber.trimRight());
         onUpdateState(name, cardNumber);
     };
 
@@ -64,6 +60,12 @@ export default function CForm({
     const onCvvBlur = (event) => {
         onUpdateState('isCardFlipped', false);
     };
+
+    // NOTE: Currenty the cursor on the card number field gets reset if we remove a number, the code bellow was used
+    // in class components, need to transform this to work with functional components.
+    // getSnapshotBeforeUpdate() {
+    //     return this.props.cardNumberRef.current.selectionStart;
+    // }
 
     // const componentDidUpdate = function (prevProps, prevState, cursorIdx) {
     //     const node = cardNumberRef.current;
@@ -98,7 +100,7 @@ export default function CForm({
                         ref={cardNumberRef}
                         onFocus={(e) => onCardInputFocus(e, 'cardNumber')}
                         onBlur={onCardInputBlur}
-                        value={state.cardNumber}
+                        value={cardNumber}
                     />
                 </div>
 
@@ -140,7 +142,7 @@ export default function CForm({
                                     Month
                                 </option>
 
-                                {state.monthsArr.map((val, index) => (
+                                {monthsArr.map((val, index) => (
                                     <option key={index} value={val}>
                                         {val}
                                     </option>
@@ -158,7 +160,7 @@ export default function CForm({
                                     Year
                                 </option>
 
-                                {state.yearsArr.map((val, index) => (
+                                {yearsArr.map((val, index) => (
                                     <option key={index} value={val}>
                                         {val}
                                     </option>
@@ -183,7 +185,7 @@ export default function CForm({
                                 onChange={handleFormChange}
                                 onFocus={onCvvFocus}
                                 onBlur={onCvvBlur}
-                                ref={state.cardCvvRef}
+                                ref={cardCvv}
                             />
                         </div>
                     </div>
