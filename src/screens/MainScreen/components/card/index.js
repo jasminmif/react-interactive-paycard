@@ -65,7 +65,7 @@ const Card = ({
 
     useEffect(() => {
         if (currentFocusedElm) {
-            const style = outlineElementStyle(currentFocusedElm);
+            const style = outlineElementStyle(currentFocusedElm.current);
             setStyle(style);
         }
     }, [currentFocusedElm]);

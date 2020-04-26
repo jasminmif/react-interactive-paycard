@@ -61,7 +61,7 @@ export default function CForm({
         onUpdateState('isCardFlipped', false);
     };
 
-    // NOTE: Currenty the cursor on the card number field gets reset if we remove a number, the code bellow was used
+    // NOTE: Currently the cursor on the card number field gets reset if we remove a number, the code bellow was used
     // in class components, need to transform this to work with functional components.
     // getSnapshotBeforeUpdate() {
     //     return this.props.cardNumberRef.current.selectionStart;

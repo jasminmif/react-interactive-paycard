@@ -25,7 +25,7 @@ const MainScreen = () => {
         [state]
     );
 
-    // References for the Form Inputs
+    // References for the Form Inputs used to focus corresponding inputs.
     let formFieldsRefObj = {
         cardNumber: useRef(),
         cardHolder: useRef(),
@@ -37,11 +37,11 @@ const MainScreen = () => {
         formFieldsRefObj[key].current.focus();
     }, []);
 
-    // This are the references for the Card DIV elements
+    // This are the references for the Card DIV elements.
     let cardElementsRef = {
-        cardNumber: null,
-        cardHolder: null,
-        cardDate: null
+        cardNumber: useRef(),
+        cardHolder: useRef(),
+        cardDate: useRef()
     };
 
     let onCardFormInputFocus = (_event, inputName) => {
@@ -74,13 +74,9 @@ const MainScreen = () => {
                     isCardFlipped={state.isCardFlipped}
                     currentFocusedElm={currentFocusedElm}
                     onCardElementClick={focusFormFieldByKey}
-                    cardNumberRef={(node) =>
-                        (cardElementsRef['cardNumber'] = node)
-                    }
-                    cardHolderRef={(node) =>
-                        (cardElementsRef['cardHolder'] = node)
-                    }
-                    cardDateRef={(node) => (cardElementsRef['cardDate'] = node)}
+                    cardNumberRef={cardElementsRef.cardNumber}
+                    cardHolderRef={cardElementsRef.cardHolder}
+                    cardDateRef={cardElementsRef.cardDate}
                 ></Card>
             </CForm>
         </div>
