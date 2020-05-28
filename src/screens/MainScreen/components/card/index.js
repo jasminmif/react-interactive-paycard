@@ -12,7 +12,8 @@ const CARDS = {
     mastercard: '^5[1-5]',
     discover: '^6011',
     unionpay: '^62',
-    troy: '^9792'
+    troy: '^9792',
+    diners: '^(30[0-5]|36)'
 };
 
 const cardBackgroundName = () => {
