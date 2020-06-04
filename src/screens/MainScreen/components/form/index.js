@@ -8,6 +8,7 @@ const monthsArr = Array.from({ length: 12 }, (x, i) => {
 const yearsArr = Array.from({ length: 9 }, (_x, i) => currentYear + i);
 
 export default function CForm({
+    handleSubmit,
     cardMonth,
     cardYear,
     onUpdateState,
@@ -17,7 +18,7 @@ export default function CForm({
     onCardInputFocus,
     onCardInputBlur,
     cardCvv,
-    children
+    children,
 }) {
     const [cardNumber, setCardNumber] = useState('');
 
@@ -189,6 +190,14 @@ export default function CForm({
                             />
                         </div>
                     </div>
+                </div>
+                <div className="card-form__row">
+                    <button
+                        onClick={handleSubmit}
+                        className="card-input__input"
+                    >
+                        Save
+                    </button>
                 </div>
             </div>
         </div>
