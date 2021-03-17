@@ -261,8 +261,8 @@ const Card = ({
                     </div>
                     <div className="card-item__type">
                         <img
-                            alt="card-type"
-                            src={'/card-type/visa.png'}
+                            alt={useCardType}
+                            src={`/static/credit-card/card-type/${useCardType}.png`}
                             className="card-item__typeImg"
                         />
                     </div>
