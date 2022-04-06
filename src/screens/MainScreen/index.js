@@ -8,7 +8,7 @@ const initialState = {
     cardMonth: '',
     cardYear: '',
     cardCvv: '',
-    isCardFlipped: false
+    isCardFlipped: false,
 };
 
 const MainScreen = () => {
@@ -19,7 +19,7 @@ const MainScreen = () => {
         (keyName, value) => {
             setState({
                 ...state,
-                [keyName]: value || initialState[keyName]
+                [keyName]: value || initialState[keyName],
             });
         },
         [state]
@@ -30,7 +30,7 @@ const MainScreen = () => {
         cardNumber: useRef(),
         cardHolder: useRef(),
         cardDate: useRef(),
-        cardCvv: useRef()
+        cardCvv: useRef(),
     };
 
     let focusFormFieldByKey = useCallback((key) => {
@@ -41,7 +41,7 @@ const MainScreen = () => {
     let cardElementsRef = {
         cardNumber: useRef(),
         cardHolder: useRef(),
-        cardDate: useRef()
+        cardDate: useRef(),
     };
 
     let onCardFormInputFocus = (_event, inputName) => {
@@ -53,9 +53,14 @@ const MainScreen = () => {
         setCurrentFocusedElm(null);
     }, []);
 
+    let doSubmit = () => {
+        return console.log(state);
+    };
+
     return (
         <div className="wrapper">
             <CForm
+                handleSubmit={doSubmit}
                 cardMonth={state.cardMonth}
                 cardYear={state.cardYear}
                 onUpdateState={updateStateValues}
