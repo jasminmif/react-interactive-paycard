@@ -1,0 +1,162 @@
+# This workflow installs the latest version of Terraform CLI and configures the Terraform CLI configuration file
+# with an API token for Terraform Cloud (app.terraform.io). On pull request events, this workflow will run
+# `terraform init`, `terraform fmt`, and `terraform plan` (speculative plan via Terraform Cloud). On push events
+# to the "master" branch, `terraform apply` will be executed.
+#
+# Documentation for `hashicorp/setup-terraform` is located here: https://github.com/hashicorp/setup-terraform
+#
+# To use this workflow, you will need to complete the following setup steps.
+#
+# 1. Create a `main.tf` file in the root of this repository with the `remote` backend and one or more resources defined.
+#   Example `main.tf`:
+#     # The configuration for the `remote` backend.
+#     terraform {
+#       backend "remote" {
+#         # The name of your Terraform Cloud organization.
+#         organization = "example-organization"
+#
+#         # The name of the Terraform Cloud workspace to store Terraform state files in.
+#         workspaces {
+#           name = "example-workspace"
+#         }
+#       }
+#     }
+#
+#     # An example resource that does nothing.
+#     resource "null_resource" "example" {
+#       triggers = {
+#         value = "A example resource that does nothing!"
+#       }
+#     }
+#
+#
+# 2. Generate a Terraform Cloud user API token and store it as a GitHub secret (e.g. TF_API_TOKEN) on this repository.
+#   Documentation:
+#     - https://www.terraform.io/docs/cloud/users-teams-organizations/api-tokens.html
+#     - https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
+#
+# 3. Reference the GitHub secret in step using the `hashicorp/setup-terraform` GitHub Action.
+#   Example:
+#     - name: Setup Terraform
+#       uses: hashicorp/setup-terraform@v1
+#       with:
+#         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+name: 'Terraform'
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+    environment: production
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+
+    # Checks that all Terraform configuration files adhere to a canonical format
+    - name: Terraform Format
+      run: terraform fmt -check
+
+    # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      run: terraform plan -input=false
+
+      # On push to "master", build or change infrastructure according to Terraform configuration files
+      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/"master"' && github.event_name == 'push'
+      run: terraform apply -auto-approve -input=false
+
+            - nazwa: Cache
+  zastosowania: actions/cache@v5.0.1
+  z:
+    # Lista plików, katalogów i wzorców symboli wieloznacznych do buforowania i przywracania
+    ścieżka:
+    # Jawny klucz do przywracania i zapisywania pamięci podręcznej
+    klawisz:
+    # Uporządkowany ciąg wielowierszowy zawierający listę kluczy dopasowanych do prefiksu, które służą do przywracania nieaktualnej pamięci podręcznej, jeśli nie wystąpiło trafienie do pamięci podręcznej dla klucza. Uwaga: `cache-hit` w tym przypadku zwraca wartość false.
+    przywróć-klucze: # opcjonalnie
+    # Rozmiar fragmentu używany do dzielenia dużych plików podczas przesyłania, w bajtach
+    upload-chunk-size: # opcjonalny
+    # Opcjonalna wartość logiczna, gdy jest włączona, umożliwia programom uruchamiającym system Windows zapisywanie lub przywracanie pamięci podręcznej, która może zostać przywrócona lub zapisana odpowiednio na innych platformach
+    enableCrossOsArchive: # opcjonalne, domyślnie false
+    # Niepowodzenie przepływu pracy, jeśli nie zostanie znaleziony wpis w pamięci podręcznej
+    fail-on-cache-miss: # opcjonalny, wartością domyślną jest false
+    # Sprawdź, czy dla podanych danych wejściowych (klucz, przywracanie kluczy) istnieje wpis w pamięci podręcznej bez pobierania pamięci podręcznej
+    tylko wyszukiwanie: # opcjonalne, wartością domyślną jest fałsz
+    # Uruchom krok końcowy, aby zapisać pamięć podręczną, nawet jeśli poprzedni krok się nie powiedzie
+    save-always: # opcjonalnie, domyślnie false
+
+                      - nazwa: Prześlij artefakt kompilacji
+  zastosowania: actions/upload-artifact@v6.0.0
+  z:
+    # Nazwa artefaktu
+    nazwa: # opcjonalnie, domyślnie artefakt
+    # Plik, katalog lub wzorzec wieloznaczny opisujący, co należy przesłać
+    ścieżka:
+    # Pożądane zachowanie w przypadku, gdy za pomocą podanej ścieżki nie zostaną znalezione żadne pliki.
+Dostępne opcje:
+  ostrzeżenie: Wyświetl ostrzeżenie, ale nie zakończ akcji niepowodzeniem
+  błąd: akcja nie powiodła się z komunikatem o błędzie
+  zignoruj: Nie wyświetlaj żadnych ostrzeżeń ani błędów, akcja nie zakończy się niepowodzeniem
+
+    if-no-files-found: # opcjonalnie, domyślnie jest to ostrzeżenie
+    # Okres czasu, po którym artefakt straci ważność (w dniach). 0 oznacza użycie domyślnego czasu przechowywania.
+Minimum 1 dzień. Maksimum 90 dni, chyba że zmieniono na stronie ustawień repozytorium.
+
+    dni retencji: # opcjonalnie
+    # Poziom kompresji biblioteki Zlib, który ma zostać zastosowany do archiwum artefaktów. Wartość może mieścić się w zakresie od 0 do 9: - 0: Brak kompresji - 1: Najwyższa prędkość - 6: Domyślna kompresja (taka sama jak w GNU Gzip) - 9: Najwyższa kompresja. Wyższe poziomy zapewniają lepszą kompresję, ale jej ukończenie zajmuje więcej czasu. W przypadku dużych plików, których nie da się łatwo skompresować, zaleca się wartość 0, aby znacznie przyspieszyć przesyłanie.
+
+    poziom kompresji: # opcjonalny, domyślnie 6
+    # Jeśli wartość to prawda, artefakt o pasującej nazwie zostanie usunięty przed przesłaniem nowego. Jeśli wartość to fałsz, akcja zakończy się niepowodzeniem, jeśli artefakt o podanej nazwie już istnieje. Nie kończy się niepowodzeniem, jeśli artefakt nie istnieje.
+
+    nadpisz: # opcjonalnie, domyślnie fałsz
+    # Jeśli wartość jest równa true, ukryte pliki zostaną uwzględnione w artefakcie. Jeśli wartość jest równa false, ukryte pliki zostaną wykluczone z artefaktu.
+
+    include-hidden-files: # opcjonalne, domyślnie false
+
+            - nazwa: Konfiguracja zestawu SDK .NET Core
+  zastosowania: actions/setup-dotnet@v5.0.1
+  z:
+    # Opcjonalne wersje zestawu SDK do użycia. Jeśli nie zostaną podane, zainstaluje wersję global.json, gdy będzie dostępna. Przykłady: 2.2.104, 3.1, 3.1.x, 3.x, 6.0.2xx
+    dotnet-version: # opcjonalnie
+    # Opcjonalna jakość kompilacji. Możliwe wartości to: daily, signed, validated, preview, ga.
+    dotnet-quality: # opcjonalnie
+    # Opcjonalna lokalizacja pliku global.json, jeśli plik global.json nie znajduje się w katalogu głównym repozytorium.
+    global-json-file: # opcjonalny
+    # Opcjonalne źródło pakietu, dla którego ma zostać skonfigurowane uwierzytelnianie. Sprawdzi istniejący plik NuGet.config w katalogu głównym repozytorium i udostępni tymczasowy plik NuGet.config, używając zmiennej środowiskowej NUGET_AUTH_TOKEN jako hasła ClearTextPassword.
+    source-url: # opcjonalnie
+    # Opcjonalny WŁAŚCICIEL do korzystania z pakietów z organizacji/użytkowników rejestru pakietów GitHub innych niż właściciel bieżącego repozytorium. Używane tylko wtedy, gdy w źródle znajduje się również adres URL GPR.
+    właściciel: # opcjonalnie
+    # Opcjonalna lokalizacja pliku NuGet.config, jeśli plik NuGet.config nie znajduje się w katalogu głównym repozytorium.
+    plik konfiguracyjny: # opcjonalny
+    # Opcjonalne dane wejściowe umożliwiające buforowanie folderu globalnych pakietów NuGet
+    pamięć podręczna: # opcjonalnie
+    # Służy do określenia ścieżki do pliku zależności: packages.lock.json. Obsługuje symbole wieloznaczne lub listę nazw plików do buforowania wielu zależności.
+    ścieżka-zależności-pamięci-podręcznej: # opcjonalnie
+          
